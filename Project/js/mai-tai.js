@@ -5,11 +5,11 @@
     const CANVAS_WIDTH = 500;
     const CANVAS_HEIGHT = 500;
     const CANVAS_STYLE = `
-                border: 1px solid black;
                 backgroundColor: rgba(0, 0, 0, 0);
                 position: absolute;
                 z-index: 100;
                 `;
+
     const ID_PROVIDER = (function () {
         let nextId = 0;
 
@@ -19,6 +19,14 @@
             }
         }
     }());
+
+    // weak enum
+    const DIRS = {
+        TOP_RIGHT: 0,
+        BOTTOM_RIGHT: 1,
+        BOTTOM_LEFT: 2,
+        TOP_LEFT: 3
+    };
 
     class MaiTaiButton extends HTMLElement {
         constructor() {
@@ -38,6 +46,7 @@
 
             // this._buttonCache.addEventListener('click', () => this.startAnimation());
             this._buttonCache.addEventListener('dragover', (ev) => {
+
                 // TODO: Remove hard-coded initial positioning, calculate; make constant if not
                 let offsetTop = 230;
                 let offsetLeft = 280;
@@ -47,20 +56,19 @@
                  console.log('Drag left ' + ev.clientX);
                  console.log('Drag top ' + ev.clientY);*/
 
-                // START YOUR OWN ANIMATIONS HERE !
-                // Create your own versions of this.startAnimation();
+                // TODO: Drag is buggy, doesn't work at all on Firefox, fix
                 if (isTopRightDrag()) {
-                    this.startAnimation();
-                    // console.log('top right');
+                    this.startAnimation(DIRS.TOP_RIGHT);
+                    console.log('top right');
                 } else if (isBottomLeftDrag()) {
-
-                    // console.log('bottom left');
+                    this.startAnimation(DIRS.BOTTOM_LEFT);
+                    console.log('bottom left');
                 } else if (isBottomRightDrag()) {
-
-                    // console.log('bottom right');
+                    this.startAnimation(DIRS.BOTTOM_RIGHT);
+                    console.log('bottom right');
                 } else if (isTopLeftDrag()) {
-
-                    // console.log('top left');
+                    this.startAnimation(DIRS.TOP_LEFT);
+                    console.log('top left');
                 } else {
                     throw Error('Invalid operation on the event object');
                 }
@@ -80,7 +88,7 @@
                 function isTopLeftDrag() {
                     return ev.clientX < offsetLeft && ev.clientY < offsetTop;
                 }
-            });
+            }, false);
         }
 
         initShadowRoot() {
@@ -109,6 +117,7 @@
             button.style = this.getAttribute('data-style');
             button.innerText = this.textContent;
             button.style.position = 'relative';
+            button.style.draggable = 'true';
 
             this._buttonCache = button;
         }
@@ -117,7 +126,7 @@
             this._ctx = canvas.getContext("2d");
         }
 
-        startAnimation() {
+        startAnimation(dir) {
             // store the button's style string before switching to Canvas
             this._cssText = this._buttonCache.style.cssText;
 
@@ -139,8 +148,12 @@
 
             let that = this;
             let stop = false;
+            let time;
+            let pos = {x: 244, y: 220};
 
             // start animation with Canvas
+            // http://creativejs.com/resources/requestanimationframe/
+            // START YOUR OWN ANIMATIONS HERE !
             window.requestAnimationFrame(function draw() {
                 if (stop) {
                     return;
@@ -148,16 +161,51 @@
 
                 that._ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-                that._ctx.beginPath();
-                that._ctx.moveTo(100, 150);
-                that._ctx.lineTo(450, 50);
-                that._ctx.lineWidth = 10;
+                let now = new Date().getTime(),
+                    dt = now - (time || now);
 
-                // set line color
-                that._ctx.strokeStyle = '#ff0000';
-                that._ctx.stroke();
+                time = now;
 
-                // console.log("frames");
+                if (dir === DIRS.TOP_RIGHT) {
+                    pos.y += dt / 5;
+
+                    that._ctx.drawImage(that._buttonImageCache, pos.x, pos.y);
+                } else if (dir === DIRS.BOTTOM_RIGHT) {
+
+
+
+
+
+
+
+                } else if (dir === DIRS.BOTTOM_LEFT) {
+
+                    that._ctx.save();
+                    that._ctx.rotate(dt / 2 * Math.PI / 180);
+                    that._ctx.drawImage(that._buttonImageCache, pos.x, pos.y);
+
+                    
+
+
+
+
+                } else if (dir === DIRS.TOP_LEFT) {
+
+
+
+
+
+
+
+                } else {
+                    throw Error('Invalid direction');
+                }
+
+
+
+
+
+                // console.log('frames');
 
                 window.requestAnimationFrame(draw);
             });
@@ -166,7 +214,7 @@
             setTimeout(function () {
                 stop = true;
                 that.removeCanvas();
-            }, 3000);
+            }, 2500);
         }
 
         removeCanvas() {
@@ -198,7 +246,8 @@
             that._imageOffsetY = 250;
 
             img.onload = function () {
-                that._ctx.drawImage(img, that._imageOffsetX, that._imageOffsetY);
+                // that._ctx.drawImage(img, that._imageOffsetX, that._imageOffsetY);
+
                 DOMURL.revokeObjectURL(url);
             };
 
