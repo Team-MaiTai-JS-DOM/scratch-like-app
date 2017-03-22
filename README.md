@@ -1,12 +1,12 @@
 ## Team Mai-Tai  
-### Custom HTML elements
+### Easy-programming
 
 **Project description:** 
-This teamwork focus on creating custom HTML elements. //must add more
+Simple application for programming small animations with given picture and some commands.
 
 
 #### Links:
-* [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements)
+* [scratch](https://scratch.mit.edu/)
 * [Telerik Academy Project Requirements](https://github.com/TelerikAcademy/JavaScript-UI-and-DOM/tree/master/Teamwork)
 
 
