@@ -1,12 +1,19 @@
-let pic;let setPics = [];
+let pic1, setPics = [], logicOperations = [];
+function preload() {
+    pic1 = loadImage('img/darth.png');
+}
 function setup() {
     createCanvas(600,600);
-    pic = loadImage('img/darth.png');
 }
 function draw() {
     background(180);
-    for (let i = 0; i < setPics.length; i++) {
-        image(setPics[i], 100,100);
+
+    if(operate){
+        operate = false;
+        for (let i = 0; i < logicOperations.length; i++) {
+            logicOperations[i]();
+        }
     }
 
+    drawSprites();
 }
