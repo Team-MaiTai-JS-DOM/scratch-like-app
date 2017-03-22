@@ -2,7 +2,7 @@
 ### Easy-programming
 
 **Project description:** 
-Simple application for programming small animations with givven picture and some commands.
+Simple application for programming small animations with given picture and some commands.
 
 
 #### Links:
