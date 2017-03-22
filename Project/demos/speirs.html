@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mai Tai Custom Element</title>
+    <link rel="stylesheet" href="../css/mai-tai.css">
+
+    <!--Shim for shadow dom in Firefox -->
+    <script src="../js/libraries/shadydom.min.js"></script>
+    <!--Polyfill for custom elements-->
+    <script src="../js/libraries/custom-elements.min.js"></script>
+
+</head>
+<body>
+    <div class="wrapper">
+
+        <header class="clearfix">
+
+            <div class="main-title">
+                <a href="#"><h4>Test</h4></a>
+            </div>
+
+            <nav class="main-nav">
+
+                <ul>
+                    <li>
+                        <a href="#">Lorem</a>
+                        <ul>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Lorem</a>
+                        <ul>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><mai-tai-button>Mai-tai</mai-tai-button></a>
+                        <ul>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><mai-tai-button>Mai Tai</mai-tai-button></a>
+                        <ul>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Lorem</a>
+                        <ul>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                            <li><a href="#">Ipsum</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav> <!-- main nav end -->
+
+        </header> <!-- header end -->
+
+    </div> <!-- wraper end -->
+
+
+
+
+    <!--<script src="./js/custom-elements.min.js"></script>-->
+    <script>
+        let maiTaiButtons = document.getElementsByTagName('mai-tai-button');
+        let buttonsList = [].slice.call(maiTaiButtons);
+        for(let i in buttonsList) {
+            buttonsList[i].dataset.style = `-moz-box-shadow: 0px 10px 14px -7px #276873;
+                        -webkit-box-shadow: 0px 10px 14px -7px #276873;
+                        box-shadow: 0px 10px 14px -7px #276873;
+                        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
+                        background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
+                        background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
+                        background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
+                        background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
+                        background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+                        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
+                        background-color:#599bb3;
+                        -moz-border-radius:8px;
+                        -webkit-border-radius:8px;
+                        border-radius:8px;
+                        display:inline-block;
+                        cursor:pointer;
+                        color:#ffffff;
+                        font-family:Arial;
+                        font-size:14px;
+                        padding:5px 10px;
+                        text-decoration:none;
+                        text-shadow:0px 1px 0px #3d768a;`;
+        }
+
+        // TODO: Use the style attribute
+    </script>
+
+    <script src="../js/mai-tai.js"></script>
+
+</body>
+</html>
