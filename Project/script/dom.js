@@ -9,7 +9,6 @@ let imageInsert = document.getElementById('imga1');
         }
 }
 
-
 //moveLeft button
 let moveLeftButton = document.getElementById('moveLeft');
 moveLeftButton.addEventListener('click', pushAction);
@@ -25,7 +24,6 @@ function pushAction() {
 function moveLeft() {
     s.position.x += 3;
 }
-
 
 //execute button
 let execute = document.getElementById('execute');
