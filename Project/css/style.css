@@ -23,7 +23,28 @@ img {
     overflow-y: scroll;
 }
 
+#buttons-container-menu button{
+    margin-bottom: 2px;
+}
+
 #sidebar-right button{
 margin-top: 2px;
 }
 
+#buttons-container-canvas button{
+    margin-top: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 20px  #FF9800; 
+    border-radius: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #FF9800;
+}
