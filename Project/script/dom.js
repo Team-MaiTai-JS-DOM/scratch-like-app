@@ -10,7 +10,7 @@ let imageInsert = document.getElementById('imga1');
 }
 
 //moveLeft button
-let moveLeftButton = document.getElementById('moveLeft');
+let moveLeftButton = document.getElementById('moveLeft'); 
 moveLeftButton.addEventListener('click', pushAction);
 function pushAction() {
     let logic = document.getElementById('logic');

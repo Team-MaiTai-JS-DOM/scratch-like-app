@@ -17,27 +17,45 @@ img {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#fefefe', GradientType=0 );/* IE6-9 */
 }
 
-#sampleSprites{
+#content-sample-sprites{
     max-width: 600px;
     max-height: 120px;
     overflow-y: scroll;
 }
 
-#buttons-container-menu button{
+#header-buttons-container button{
     margin-bottom: 2px;
 }
 
-#sidebar-right button{
-margin-top: 2px;
+#content-svg-objects-container button{
+    margin-top: 2px;
 }
 
-#buttons-container-canvas button{
+#content-svg-objects-container{
+    text-align: center;
+    height: 600px;
+    max-height: 600px;
+    border: 2px ridge #FFB74D;
+    border-radius: 5px;
+    overflow-y: scroll;
+}
+
+#content-actions-container{
+    text-align: center;
+    height: 600px;
+    max-height: 600px;
+    border: 2px ridge #FFB74D;
+    border-radius: 5px;
+    overflow-y: scroll;
+}
+
+#content-buttons-container button{
     margin-top: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 20px  #FF9800; 
-    border-radius: 12px;
+    border-radius: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -45,6 +63,6 @@ margin-top: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #FF9800;
 }

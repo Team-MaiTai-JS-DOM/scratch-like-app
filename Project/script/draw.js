@@ -7,7 +7,7 @@ function setup() {
     canvas.parent('canvas-holder');
 }
 function draw() {
-    background(210);
+    background(210);    
 
     if(operate){
         operate = false;
