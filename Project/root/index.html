@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>scratch test</title>
+        <style>
+        .button:first-child{
+            margin-left: 6px;
+        }
+
+        .button {
+           cursor: pointer;
+           border: 2px solid #0a3c59;
+           background: #e0a838;
+           background: -webkit-gradient(linear, left top, left bottom, from(#f0f0f0), to(#e0a838));
+           background: -webkit-linear-gradient(top, #f0f0f0, #e0a838);
+           background: -moz-linear-gradient(top, #f0f0f0, #e0a838);
+           background: -ms-linear-gradient(top, #f0f0f0, #e0a838);
+           background: -o-linear-gradient(top, #f0f0f0, #e0a838);
+           background-image: -ms-linear-gradient(top, #f0f0f0 0%, #e0a838 100%);
+           padding: 6px 12px;
+           -webkit-border-radius: 8px;
+           -moz-border-radius: 8px;
+           border-radius: 8px;
+           -webkit-box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 0px 0;
+           -moz-box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 0px 0;
+           box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 0px 0;
+           text-shadow: #7ea4bd 0 1px 0;
+           color: #06426c;
+           font-size: 20px;
+           font-family: helvetica, serif;
+           text-decoration: none;
+           vertical-align: middle;
+        }
+        .button:hover {
+           border: 2px solid #0a3c59;
+           text-shadow: #1e4158 0 1px 0;
+           background: #f7dc97;
+           background: -webkit-gradient(linear, left top, left bottom, from(#ced665), to(#f7dc97));
+           background: -webkit-linear-gradient(top, #ced665, #f7dc97);
+           background: -moz-linear-gradient(top, #ced665, #f7dc97);
+           background: -ms-linear-gradient(top, #ced665, #f7dc97);
+           background: -o-linear-gradient(top, #ced665, #f7dc97);
+           background-image: -ms-linear-gradient(top, #ced665 0%, #f7dc97 100%);
+           color: #3885f2;
+        }
+        .button:active {
+           text-shadow: #1e4158 0 1px 0;
+           border: 2px solid #0a3c59;
+           background: #edc653;
+           background: -webkit-gradient(linear, left top, left bottom, from(#d9af46), to(#f7dc97));
+           background: -webkit-linear-gradient(top, #d9af46, #edc653);
+           background: -moz-linear-gradient(top, #d9af46, #edc653);
+           background: -ms-linear-gradient(top, #d9af46, #edc653);
+           background: -o-linear-gradient(top, #d9af46, #edc653);
+           background-image: -ms-linear-gradient(top, #d9af46 0%, #edc653 100%);
+           color: #1a2beb;
+        }
+
+        .mousetransparent {
+           pointer-events: none;
+        }
+        * {
+                color:red;
+                -webkit-touch-callout: none;
+                  -webkit-user-select: none;
+                   -khtml-user-select: none;
+                     -moz-user-select: none;
+                      -ms-user-select: none;
+                          user-select: none; 
+        }
+        </style>
+    </head>
+    <body style="overflow:hidden;">
+        <div id="container">
+            <div id="codeGround" style="position:absolute;left:50%;top:0%; width:50%;height:100%;background-color:cyan;background:linear-gradient(to right, aqua, blueviolet)">
+                <img id="trashbin" src="trashbin.png" style="position:absolute;" />
+            </div>
+            <div id="inventory" style="position:absolute;left:30%;top:0%; width:20%;height:100%;background-color:blueviolet;overflow:auto;overflow-x:hidden;">
+            </div>
+            <div id="previewDiv" style="position:absolute;left:0%;top:0%;width:30%;height:100%;background:linear-gradient(to left, aqua, blueviolet)">
+                <img src="logo.png" style="position:absolute;left:0%;top:5%;width:100%" />
+            </div>
+            <canvas id="previewCanvas" style="position:absolute;background-color:white;"></canvas>
+            <div id="upperButtonsDiv" style="position:absolute;left:0%;width:30%;height:40px;">
+                <a class='button'>Load</a>
+                <a class='button'>Save</a>
+                <a id="startButton" class='button'>Start</a>
+                <a id="stopButton" class='button'>Stop</a>
+                <a class='button'>Debug</a>
+            </div>
+            <div id="previewSprites" style="position:absolute;left:0%;width:30%;overflow:hidden;">
+                <img id="girl" src="girl.png" style="position:relative"/>
+            </div>
+        </div>
+        <script type="text/javascript" src="main.js" defer></script>
+    </body>
+</html>
