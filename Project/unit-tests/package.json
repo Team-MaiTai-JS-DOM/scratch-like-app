@@ -16,7 +16,9 @@
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha mocha-tests.js -c"
   },
-  "devDependencies": {
-    "mocha": "0.3.x"
+  "devDependencies": {},
+  "dependencies": {
+    "mocha": "^3.2.0",
+    "chai": "^3.5.0"
   }
 }
