@@ -107,7 +107,7 @@ function resize() {
     canvasPreview.width = canvasWidth;
     canvasPreview.height = canvasHeight;
 
-    spritesDiv.style.top = window.innerHeight - spritesDiv.clientHeight + 'px';
+    spritesDiv.style.top = canvasHeight + 200 + 'px';
 
     canvasPreviewHeight = (window.innerHeight / 2 - canvasHeight / 2);
     canvasPreview.style.top = canvasPreviewHeight + 'px';
@@ -1177,7 +1177,7 @@ class KeyEventLoopBlock extends DraggedCodingBlock {
     }
 }
 
-// there is only one way to delete some block and it si by dragging it at the trash bin or outside coding area, so delleteable expands daragged
+// there is only one way to delete some block and it si by dragging it at the trash bin or outside coding area, so deletable expands dragged
 class DelleteableCodingBlock extends DraggedCodingBlock {
     constructor(corpse, svg, x, y) {
         super(corpse, svg, x, y);
@@ -1216,7 +1216,7 @@ class DelleteableCodingBlock extends DraggedCodingBlock {
     }
 
     destroy() {
-        // first of all destroy references and dettach docks
+        // first of all destroy references and detach docks
 
         //allCodingBlocks.splice(this.id, 1);
         //for (let i = 0; i < this.tails; i++) {
@@ -1224,14 +1224,14 @@ class DelleteableCodingBlock extends DraggedCodingBlock {
         //}
         //this.container.parentElement.removeChild(this.container);
 
-        // recursivelly destroy all children
+        // recursively destroy all children
     }
 }
 
 var preComputedPositions = [];
 
 function precomputeAllPositions(self) {
-    // precompute positions for all the heads on MouseDown instrad doing it on MouseMove
+    // precompute positions for all the heads on MouseDown instead doing it on MouseMove
     for (drag_i = 0; drag_i < allTails.length; drag_i++) {
         preComputedPositions[drag_i] = allTails[drag_i].JSParent.container.getBoundingClientRect();
     }
@@ -1854,6 +1854,7 @@ function setMeOnTop(self) {
 ////                ONLY FOR TESTING PURPOSES
 
 var imgGirl = document.getElementById('girl');
+var imgVader = document.getElementById('vader');
 
 class Sprite {
     constructor(img, width, height){
@@ -1927,7 +1928,7 @@ class Sprite {
 }
 
 var girl = new Sprite(imgGirl, 100, 100);
-
+var vader = new Sprite(imgVader, 120, 100);
 
 
 // populate the inventory table
