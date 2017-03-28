@@ -1,3 +1,4 @@
 .idea/
 .vscode/
 *.eslintrc.json
+node_modules/

@@ -1,0 +1,22 @@
+{
+  "name": "scratch-like-app",
+  "version": "0.0.1",  
+  "description": "JavaScript UI & DOM teamwork",
+  "keywords": ["test", "mocha", "JavaScript"],
+  "author": "Team Mai-Tai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Team-MaiTai-JS-DOM/scratch-like-app"
+  },
+  "license": "ISC",
+  "main": "../index",
+  "engines": { 
+    "node": ">= 0.4.x < 0.7.0" 
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha mocha-tests.js -c"
+  },
+  "devDependencies": {
+    "mocha": "0.3.x"
+  }
+}
