@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Easy-Programming</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body style="overflow:hidden;">
+        <div id="container">
+            <div id="codeGround" style="position:absolute;left:50%;top:0%; width:50%;height:100%;background-color:cyan;background:linear-gradient(to right, aqua, blueviolet)">
+                <img id="trashbin" src="img/trashbin.png" style="position:absolute;" />
+            </div>
+            <div id="inventory" style="position:absolute;left:30%;top:0%; width:20%;height:100%;background-color:blueviolet;overflow:auto;overflow-x:hidden;">
+            </div>
+            <div id="previewDiv" style="position:absolute;left:0%;top:0%;width:30%;height:100%;background:linear-gradient(to left, aqua, blueviolet)">
+                <img src="img/logo.png" style="position:absolute;left:0%;top:5%;width:100%" />
+            </div>
+            <canvas id="previewCanvas" style="position:absolute;background-color:white;"></canvas>
+            <div id="upperButtonsDiv" style="position:absolute;left:0%;width:30%;height:40px;">
+                <a class='button'>Load</a>
+                <a class='button'>Save</a>
+                <a id="startButton" class='button'>Start</a>
+                <a id="stopButton" class='button'>Stop</a>
+                <a class='button'>Debug</a>
+            </div>
+            <div id="previewSprites" style="position:absolute;left:0%;width:30%;overflow:hidden;">
+                <img id="girl" src="img/girl.png" style="position:relative"/>
+            </div>
+        </div>
+        <script type="text/javascript" src="script/main.js" defer></script>
+    </body>
+</html>
