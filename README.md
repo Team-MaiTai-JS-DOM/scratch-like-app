@@ -1,7 +1,5 @@
 ## Team Mai-Tai  
-![logo](https://preview.ibb.co/bTxMTv/ePro.jpg)
-### Easy-programming
-
+![logo ePro](/Project/img/ePro.jpg)
 **Project description:** 
 Simple application for graphically programming small animations with given picture and some commands.
 
