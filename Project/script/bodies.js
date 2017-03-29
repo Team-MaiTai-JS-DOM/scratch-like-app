@@ -147,3 +147,16 @@ class FixedTopBarTripleBody extends TripleBody(Body) {
         super(colorRange, path, pathFeel, numericalPath, samplers, topBarHeight);
     }
 }
+
+if (typeof module !== 'undefined') {
+  module.exports = (function(){ 
+    return [
+      Body,
+      DynamicBarSingleBody,
+      DoubleBody,
+      TripleBody,
+      FixedTopBarDoubleBody,
+      FixedTopBarTripleBody
+    ]; 
+  })();
+}

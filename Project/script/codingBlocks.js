@@ -832,3 +832,24 @@ class StaticInventoryKeyDownOnceBlock extends StaticInventoryCodingBlock {
         return new KeyDownOnceBlock(x, y);
     }
 }
+
+if (typeof module !== 'undefined') {
+  module.exports = (function(){ 
+    return [
+      CodingBlock,
+      StaticInventoryCodingBlock,
+      DraggedCodingBlock,
+      KeyEventOnceBlock,
+      KeyEventLoopBlock,
+      DelleteableCodingBlock,
+      DockingCodingFigure,
+      ForeverBlock,
+      StaticInventoryForeverBlock,
+      IfElseBlock,
+      StaticInventoryIfElseBlock,
+      IfBlock,
+      StaticInventoryIfBlock,
+      StepLeftBlock
+    ]; 
+  })();
+}
