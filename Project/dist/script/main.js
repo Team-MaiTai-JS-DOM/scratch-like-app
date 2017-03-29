@@ -407,7 +407,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     var tail1 = null;
     var tail2 = null;
 
-    pathsCollection = { body: body };
+    var pathsCollection = { body: body };
 
     if (headed) {
         head = new Head(svg);
