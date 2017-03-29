@@ -198,3 +198,16 @@ class ConcavityTailSecond extends Tail {
             this.JSParent.head.dockedNeighbor.resizeCavity();
     }
 }
+
+if (typeof module !== 'undefined') {
+  module.exports = (function(){ 
+    return [ 
+      Dock, 
+      Head,
+      Tail,
+      OuternTail,
+      ConcavityTailFirst,
+      ConcavityTailSecond
+    ]; 
+  })();
+}
