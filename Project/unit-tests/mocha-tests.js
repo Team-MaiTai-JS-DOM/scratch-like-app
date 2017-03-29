@@ -1,17 +1,17 @@
 const expect = require("chai").expect;
 const bodiesJSFileImports = require("../script/bodies.js");
 const codingBlocksJSFileImports = require("../script/codingBlocks.js");
-const docsJSFileImports = require("../script/docks.js");
+const docksJSFileImports = require("../script/docks.js");
 const separatedColorsJSFileImports = require("../script/separatedColors.js");
 const spriteJSFileImports = require("../script/sprite.js");
 const titlesJSFileImports = require("../script/titles.js");
 
 describe('Unit Tests', () => {
-  describe('Class Tests', () => {
+  describe('ES2015-style Class definitions', () => {
     describe('Title tests', () => {
       it('expect `Title` to be a function', () => {
         expect(titlesJSFileImports[0]).to.be.a('function');
-      });
+      });      
     });
 
     describe('LeftTitle tests', () => {
@@ -22,37 +22,37 @@ describe('Unit Tests', () => {
 
     describe('Dock tests', () => {
       it('expect `Dock` to be a function', () => {
-        expect(docsJSFileImports[0]).to.be.a('function');
+        expect(docksJSFileImports[0]).to.be.a('function');
       });
     });
 
     describe('Head tests', () => {
       it('expect `Head` to be a function', () => {
-        expect(docsJSFileImports[1]).to.be.a('function');
+        expect(docksJSFileImports[1]).to.be.a('function');
       });
     });
 
     describe('Tail tests', () => {
       it('expect `Tail` to be a function', () => {
-        expect(docsJSFileImports[2]).to.be.a('function');
+        expect(docksJSFileImports[2]).to.be.a('function');
       });
     });
 
     describe('OuternTail tests', () => {
       it('expect `OuternTail` to be a function', () => {
-        expect(docsJSFileImports[3]).to.be.a('function');
+        expect(docksJSFileImports[3]).to.be.a('function');
       });
     });
 
     describe('ConcavityTailFirst tests', () => {
       it('expect `ConcavityTailFirst` to be a function', () => {
-        expect(docsJSFileImports[4]).to.be.a('function');
+        expect(docksJSFileImports[4]).to.be.a('function');
       });
     });
 
     describe('ConcavityTailSecond tests', () => {
       it('expect `ConcavityTailSecond` to be a function', () => {
-        expect(docsJSFileImports[5]).to.be.a('function');
+        expect(docksJSFileImports[5]).to.be.a('function');
       });
     });    
 
@@ -173,6 +173,18 @@ describe('Unit Tests', () => {
     describe('StepLeftBlock tests', () => {
       it('expect `StepLeftBlock` to be a function', () => {
         expect(codingBlocksJSFileImports[13]).to.be.a('function');
+      });
+    });
+
+    describe('Sprite tests', () => {
+      it('expect `Sprite` to be a function', () => {
+        expect(spriteJSFileImports).to.be.a('function');
+      });
+    });
+
+    describe('SeparatedColors tests', () => {
+      it('expect `SeparatedColors` to be a function', () => {
+        expect(separatedColorsJSFileImports).to.be.a('function');
       });
     });
   });
