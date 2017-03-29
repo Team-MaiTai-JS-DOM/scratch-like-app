@@ -12,7 +12,15 @@ Simple application for graphically programming small animations with given pictu
 ##### [SEE THE DEMO](https://www.youtube.com/watch?v=dbEYMGE6Js0) 
 ##### [TRY IT YOURSELF](http://www.svrakata.net/)
 #### Team members:
-only if you want to!
+* [TsvetelinaM](http://telerikacademy.com/Users/TsvetelinaM)
+* [Samuil_Mihaylov](http://telerikacademy.com/Users/Samuil_Mihaylov)
+* [ndvalkov](http://telerikacademy.com/Users/ndvalkov)
+* [Nikitoni](http://telerikacademy.com/Users/Nikitoni)
+* [TiizzU](http://telerikacademy.com/Users/TiizzU)
+* [svrakata](http://telerikacademy.com/Users/svrakata)
+* [stoychev.vassil](http://telerikacademy.com/Users/stoychev.vassil)
+
+
 #### Links:
 * [Scratch](https://scratch.mit.edu/)
 * [Telerik Academy Project Requirements](https://github.com/TelerikAcademy/JavaScript-UI-and-DOM/tree/master/Teamwork)
