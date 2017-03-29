@@ -112,7 +112,7 @@ function resize() {
     spritesDiv.style.top = canvasHeight + 200 + 'px';
 
     canvasPreviewHeight = window.innerHeight / 2 - canvasHeight / 2;
-    canvasPreview.qstyle.top = canvasPreviewHeight + 'px';
+    canvasPreview.style.top = canvasPreviewHeight + 'px';
     buttonsDiv.style.top = canvasPreviewHeight - buttonsDivHeight + 'px';
 
     trashBinX = divCodeGround.clientWidth - trashBinWidth;

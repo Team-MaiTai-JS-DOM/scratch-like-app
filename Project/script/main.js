@@ -109,7 +109,7 @@ function resize() {
     spritesDiv.style.top = canvasHeight + 200 + 'px';
 
     canvasPreviewHeight = (window.innerHeight / 2 - canvasHeight / 2);
-    canvasPreview.qstyle.top = canvasPreviewHeight + 'px';
+    canvasPreview.style.top = canvasPreviewHeight + 'px';
     buttonsDiv.style.top = (canvasPreviewHeight - buttonsDivHeight) + 'px';
 
     trashBinX = divCodeGround.clientWidth - trashBinWidth;
@@ -148,14 +148,14 @@ function mergeBackToColor(rChannel, gChannel, bChannel) {
     let B = '00' + Math.round(bChannel).toString(16).toUpperCase();
 
     return R.substr(R.length - 2, 2) +
-        G.substr(G.length - 2, 2) +
-        B.substr(B.length - 2, 2);
+           G.substr(G.length - 2, 2) +
+           B.substr(B.length - 2, 2);
 }
 
 function interpolateColors(colorObject, factor) {
     return mergeBackToColor(interpolateValues(colorObject.inRchannel, colorObject.outRchannel, factor),
-        interpolateValues(colorObject.inGchannel, colorObject.outGchannel, factor),
-        interpolateValues(colorObject.inBchannel, colorObject.outBchannel, factor));
+                            interpolateValues(colorObject.inGchannel, colorObject.outGchannel, factor),
+                            interpolateValues(colorObject.inBchannel, colorObject.outBchannel, factor));
 }
 
 function interpolateValues(valueIn, valueOut, factor) {
@@ -166,10 +166,10 @@ function getDockingPathNumerical(startOfShapeX, startOfShapeY) {
     return {
         commands: ['L', 'C'],
         coords:
-            [(startOfShapeX + startOfBumb), startOfShapeY,
-                (startOfShapeX + startOfBumb), startOfShapeY,
-                (startOfShapeX + startOfBumb + lengthOfBumb / 2), (startOfShapeY - heightOfBumb),
-                (startOfShapeX + startOfBumb + lengthOfBumb), startOfShapeY]
+        [(startOfShapeX + startOfBumb), startOfShapeY,
+        (startOfShapeX + startOfBumb), startOfShapeY,
+        (startOfShapeX + startOfBumb + lengthOfBumb / 2), (startOfShapeY - heightOfBumb),
+        (startOfShapeX + startOfBumb + lengthOfBumb), startOfShapeY]
     };
 }
 
@@ -178,9 +178,9 @@ function getDockingPathReverseNum(startOfShapeX, startOfShapeY, commands, coords
         commands: ['L', 'C'],
         coords:
             [(startOfShapeX - startOfBumb), startOfShapeY,
-                (startOfShapeX - startOfBumb), startOfShapeY,
-                (startOfShapeX - startOfBumb - lengthOfBumb / 2), (startOfShapeY - heightOfBumb),
-                (startOfShapeX - startOfBumb - lengthOfBumb), startOfShapeY]
+             (startOfShapeX - startOfBumb), startOfShapeY,
+             (startOfShapeX - startOfBumb - lengthOfBumb / 2), (startOfShapeY - heightOfBumb),
+             (startOfShapeX - startOfBumb - lengthOfBumb), startOfShapeY]
     };
 }
 
@@ -247,13 +247,13 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     coords.push(minTopBarWidth - smallRadius, offsetY);
 
     curveTo(minTopBarWidth - smallRadius, offsetY,   // top left corner of top bar
-        minTopBarWidth, offsetY,
-        minTopBarWidth, offsetY + smallRadius);
+            minTopBarWidth, offsetY,
+            minTopBarWidth, offsetY + smallRadius);
     widhtSampler = coords.length - 2;
     lineTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius);
     curveTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius,
-        minTopBarWidth, offsetY + shapesWallsWidth,
-        minTopBarWidth - smallRadius, offsetY + shapesWallsWidth); // bottom left corner of top bar
+            minTopBarWidth, offsetY + shapesWallsWidth,
+            minTopBarWidth - smallRadius, offsetY + shapesWallsWidth); // bottom left corner of top bar
     topBarHeight = coords[coords.length - 1];
 
     if (!isDouble && !isTriple) {   // if it is single bar line directly to the bottom right corner
@@ -265,12 +265,12 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         heightSampler = coords.length - 1;
 
         curveTo(smallRadius, offsetY + shapesWallsWidth, // bottom right corner of single top bar
-            0, offsetY + shapesWallsWidth,
-            0, offsetY + shapesWallsWidth - smallRadius);
+                0, offsetY + shapesWallsWidth,
+                0, offsetY + shapesWallsWidth - smallRadius);
         lineTo(0, smallRadius);
         curveTo(0, offsetY + smallRadius,
-            0, offsetY,
-            0 + smallRadius, offsetY);  // upper right corner of single top bar
+                0, offsetY,
+                0 + smallRadius, offsetY);  // upper right corner of single top bar
         commands.push('Z'); // close path and hopefully it will not explode
     } else {
         extractTuple(shapesWallsWidth + startOfDock + widthOfDock, shapesWallsWidth + offsetY, commands, coords);
@@ -281,26 +281,26 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
             if (sel === 0) {
                 lineTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i), sel);
                 curveTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i),     // top internal corner of the first cavity
-                    shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
-                    shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i) + smallRadius, sel);
+                        shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
+                        shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i) + smallRadius, sel);
             } else {
                 lineToAndPush(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i), 0);
                 curveToAndPushSampler(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i),     // top internal corner of the first cavity
-                    shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
-                    shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i) + smallRadius, 0);
+                                      shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
+                                      shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i) + smallRadius, 0);
             }
             lineToAndPush(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i) - smallRadius, sel);
             curveToAndPushSampler(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i) - smallRadius, // bottom internal corner of the first cavity
-                shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i),
-                shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
+                                  shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i),
+                                  shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
             lineToAndPush(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
             curveToAndPushSampler(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + i), // top left corner of the second bar
-                minTopBarWidth, offsetY + shapesWallsWidth * (2 + i),
-                minTopBarWidth, offsetY + shapesWallsWidth * (2 + i) + smallRadius, sel);
+                                  minTopBarWidth, offsetY + shapesWallsWidth * (2 + i),
+                                  minTopBarWidth, offsetY + shapesWallsWidth * (2 + i) + smallRadius, sel);
             lineToAndPush(minTopBarWidth, offsetY + shapesWallsWidth * (3 + i) - smallRadius, sel);
             curveToAndPushSampler(minTopBarWidth, offsetY + shapesWallsWidth * (3 + i) - smallRadius, // bottom left corner of the second bar
-                minTopBarWidth, offsetY + shapesWallsWidth * (3 + i),
-                minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (3 + i), sel);
+                                  minTopBarWidth, offsetY + shapesWallsWidth * (3 + i),
+                                  minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (3 + i), sel);
             if (!cloneIsTriple) {     // it needs a dock on the top of the second cavity wich is little but to the left
                 if (tailed) {
                     extractTupleAndPush(startOfDock + widthOfDock, offsetY + shapesWallsWidth * (3 + i), sel);
@@ -314,12 +314,12 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         lineToAndPush(bigRadius, offsetY + shapesWallsWidth * (3 + i), sel);
         heightSampler = coords.length - 1;
         curveToAndPushSampler(bigRadius, offsetY + shapesWallsWidth * (3 + i), // bottom right corner of the whole shape
-            0, offsetY + shapesWallsWidth * (3 + i),
-            0, offsetY + shapesWallsWidth * (3 + i) - bigRadius, sel);
+                              0, offsetY + shapesWallsWidth * (3 + i),
+                              0, offsetY + shapesWallsWidth * (3 + i) - bigRadius, sel);
         lineTo(0, offsetY + bigRadius);
         curveTo(0, offsetY + bigRadius, // top right corner of the whole shape
-            0, offsetY,
-            bigRadius, offsetY);
+                0, offsetY,
+                bigRadius, offsetY);
         commands.push('Z');
     }
 
@@ -340,7 +340,6 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
             addressMe[sel].push(coords.length - 1);
         }
     }
-
 
     function lineTo(lineToX, lineToY) {
         commands.push('L');
@@ -532,8 +531,8 @@ function mouseMove(event) {
 
 function distance2D(point_1_X, point_1_Y, point_2_X, point_2_Y) {
     return Math.sqrt((point_1_X - point_2_X) *
-        (point_1_X - point_2_X) + (point_1_Y - point_2_Y) *
-        (point_1_Y - point_2_Y));
+                     (point_1_X - point_2_X) + (point_1_Y - point_2_Y) *
+                                               (point_1_Y - point_2_Y));
 }
 
 function setMeOnTop(self) {

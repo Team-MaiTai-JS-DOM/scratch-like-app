@@ -16,7 +16,7 @@ let loopsColor = new SeparatedColors('#3f4145', '#FFFF00');
 let dockColorRange = new SeparatedColors('#FFFF00', '#FF0000');
 
 if (typeof module !== 'undefined') {
-    module.exports = (function(){
-        return SeparatedColors;
-    })();
+  module.exports = (function(){
+    return SeparatedColors;
+  })();
 }

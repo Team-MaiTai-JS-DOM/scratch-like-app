@@ -11,39 +11,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 ////////////////////////////////////////////////////////////////////////
 
 var Title = function Title(svg, left, top, text) {
-    _classCallCheck(this, Title);
+  _classCallCheck(this, Title);
 
-    this.text = text; // for logging/saving purposes
+  this.text = text; // for logging/saving purposes
 
-    this.x = left;
+  this.x = left;
 
-    this.textEl = document.createElementNS(svg.namespaceURI, 'text');
-    this.textEl.setAttribute('x', left);
-    this.textEl.setAttribute('y', top);
-    this.textEl.setAttribute('fill', titlesColor);
-    this.textEl.textContent = text;
-    this.textEl.setAttribute('class', 'codingblocktitle');
+  this.textEl = document.createElementNS(svg.namespaceURI, 'text');
+  this.textEl.setAttribute('x', left);
+  this.textEl.setAttribute('y', top);
+  this.textEl.setAttribute('fill', titlesColor);
+  this.textEl.textContent = text;
+  this.textEl.setAttribute('class', 'codingblocktitle');
 };
 
 var LeftTitle = function (_Title) {
-    _inherits(LeftTitle, _Title);
+  _inherits(LeftTitle, _Title);
 
-    // example: the "times" of "repeat times"
-    function LeftTitle(svg, left, top, text) {
-        _classCallCheck(this, LeftTitle);
+  // example: the "times" of "repeat times"
+  function LeftTitle(svg, left, top, text) {
+    _classCallCheck(this, LeftTitle);
 
-        var _this = _possibleConstructorReturn(this, (LeftTitle.__proto__ || Object.getPrototypeOf(LeftTitle)).call(this, svg, left, top, text));
+    var _this = _possibleConstructorReturn(this, (LeftTitle.__proto__ || Object.getPrototypeOf(LeftTitle)).call(this, svg, left, top, text));
 
-        _this.left = left; // "times" could be at any offset appart of "repeat" due to the text box in between
-        return _this;
-    }
+    _this.left = left; // "times" could be at any offset appart of "repeat" due to the text box in between
+    return _this;
+  }
 
-    return LeftTitle;
+  return LeftTitle;
 }(Title);
 
 if (typeof module !== 'undefined') {
-    module.exports = function () {
-        return [Title, LeftTitle];
-    }();
+  module.exports = function () {
+    return [Title, LeftTitle];
+  }();
 }
 //# sourceMappingURL=titles.js.map

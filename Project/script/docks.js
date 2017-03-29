@@ -200,14 +200,14 @@ class ConcavityTailSecond extends Tail {
 }
 
 if (typeof module !== 'undefined') {
-    module.exports = (function(){
-        return [
-            Dock,
-            Head,
-            Tail,
-            OuternTail,
-            ConcavityTailFirst,
-            ConcavityTailSecond
-        ];
-    })();
+  module.exports = (function(){
+    return [
+      Dock,
+      Head,
+      Tail,
+      OuternTail,
+      ConcavityTailFirst,
+      ConcavityTailSecond
+    ];
+  })();
 }
