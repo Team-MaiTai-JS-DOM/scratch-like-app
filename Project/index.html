@@ -7,25 +7,25 @@
     </head>
     <body style="overflow:hidden;">
         <div id="container">
-            <div id="codeGround" style="position:absolute;left:50%;top:0%; width:50%;height:100%;background-color:cyan;background:linear-gradient(to right, aqua, blueviolet)">
-                <img id="trashbin" src="img/trashbin.png" style="position:absolute;" />
+            <div id="codeGround">
+                <img id="trashbin" src="img/trashbin.png" />
             </div>
-            <div id="inventory" style="position:absolute;left:30%;top:0%; width:20%;height:100%;background-color:blueviolet;overflow:auto;overflow-x:hidden;">
+            <div id="inventory" >
             </div>
-            <div id="previewDiv" style="position:absolute;left:0%;top:0%;width:30%;height:100%;background:linear-gradient(to left, aqua, blueviolet)">
-                <img src="img/logo.png" style="position:absolute;left:0%;top:5%;width:100%" />
+            <div id="previewDiv">
+                <img src="img/logoGrass.png"  class="logoImg"  />
             </div>
-            <canvas id="previewCanvas" style="position:absolute;background-color:white;"></canvas>
-            <div id="upperButtonsDiv" style="position:absolute;left:0%;width:30%;height:40px;">
+            <canvas id="previewCanvas"> </canvas>
+            <div id="upperButtonsDiv" >
                 <a class='button'>Load</a>
                 <a class='button'>Save</a>
                 <a id="startButton" class='button'>Start</a>
                 <a id="stopButton" class='button'>Stop</a>
                 <a class='button'>Debug</a>
             </div>
-            <div id="previewSprites" style="position:absolute;left:0%;width:30%;overflow:hidden;">
-                <img id="girl" src="img/girl.png" style="position:relative"/>
-                <img id="vader" src="img/vader.png" alt="tall man in dark futuristic suit and mask on his head">
+            <div id="previewSprites" >
+                <img id="girl" class="imgSprites"src="img/girl.png" />
+                <img id="vader"class="imgSprites" src="img/vader.png" alt="tall man in dark futuristic suit and mask on his head">
             </div>
         </div>
         <script type="text/javascript" src="script/sprite.js" defer></script>
@@ -35,6 +35,5 @@
         <script type="text/javascript" src="script/docks.js" defer></script>
         <script type="text/javascript" src="script/separatedColors.js" defer></script>
         <script type="text/javascript" src="script/main.js" defer></script>
-
     </body>
 </html>

@@ -12,5 +12,5 @@ class SeparatedColors {
         this.outBchannel = parseInt(outColor.substring(5, 7), 16);
     }
 }
-let loopsColor = new SeparatedColors('#00FF00', '#FFFF00');
+let loopsColor = new SeparatedColors('#3f4145', '#FFFF00');
 let dockColorRange = new SeparatedColors('#FFFF00', '#FF0000');

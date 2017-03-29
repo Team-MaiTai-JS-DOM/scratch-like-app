@@ -76,7 +76,7 @@ let lengthOfBumb = widthOfDock - startOfBumb * 2;
 let startOfDock = 35;
 
 // design of the body shape
-let titlesColor = '#FF5500';
+let titlesColor = '#d6d8a0';
 let minTopBarWidth = 150;
 let shapesWallsWidth = 25;
 let bigRadius = 20;
@@ -243,19 +243,19 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         for (let i = 0; i < pathTuple.coords.length; i++)
             coords.push(pathTuple.coords[i]);
         commands.push('C', 'L');
-    } 
+    }
     coords.push(minTopBarWidth - smallRadius, offsetY);
 
     curveTo(minTopBarWidth - smallRadius, offsetY,   // top left corner of top bar
-            minTopBarWidth, offsetY, 
+            minTopBarWidth, offsetY,
             minTopBarWidth, offsetY + smallRadius);
     widhtSampler = coords.length - 2;
     lineTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius);
-    curveTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius, 
-            minTopBarWidth, offsetY + shapesWallsWidth, 
+    curveTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius,
+            minTopBarWidth, offsetY + shapesWallsWidth,
             minTopBarWidth - smallRadius, offsetY + shapesWallsWidth); // bottom left corner of top bar
     topBarHeight = coords[coords.length - 1];
-    
+
     if (!isDouble && !isTriple) {   // if it is single bar line directly to the bottom right corner
         // let test if tail needed first
         if (tailed) {
@@ -265,8 +265,8 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         heightSampler = coords.length - 1;
 
         curveTo(smallRadius, offsetY + shapesWallsWidth, // bottom right corner of single top bar
-                0, offsetY + shapesWallsWidth, 
-                0, offsetY + shapesWallsWidth - smallRadius);  
+                0, offsetY + shapesWallsWidth,
+                0, offsetY + shapesWallsWidth - smallRadius);
         lineTo(0, smallRadius);
         curveTo(0, offsetY + smallRadius,
                 0, offsetY,
@@ -291,15 +291,15 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
             }
             lineToAndPush(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i) - smallRadius, sel);
             curveToAndPushSampler(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i) - smallRadius, // bottom internal corner of the first cavity
-                                  shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i), 
+                                  shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i),
                                   shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
             lineToAndPush(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
             curveToAndPushSampler(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + i), // top left corner of the second bar
-                                  minTopBarWidth, offsetY + shapesWallsWidth * (2 + i), 
+                                  minTopBarWidth, offsetY + shapesWallsWidth * (2 + i),
                                   minTopBarWidth, offsetY + shapesWallsWidth * (2 + i) + smallRadius, sel);
             lineToAndPush(minTopBarWidth, offsetY + shapesWallsWidth * (3 + i) - smallRadius, sel);
             curveToAndPushSampler(minTopBarWidth, offsetY + shapesWallsWidth * (3 + i) - smallRadius, // bottom left corner of the second bar
-                                  minTopBarWidth, offsetY + shapesWallsWidth * (3 + i), 
+                                  minTopBarWidth, offsetY + shapesWallsWidth * (3 + i),
                                   minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (3 + i), sel);
             if (!cloneIsTriple) {     // it needs a dock on the top of the second cavity wich is little but to the left
                 if (tailed) {
@@ -314,11 +314,11 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         lineToAndPush(bigRadius, offsetY + shapesWallsWidth * (3 + i), sel);
         heightSampler = coords.length - 1;
         curveToAndPushSampler(bigRadius, offsetY + shapesWallsWidth * (3 + i), // bottom right corner of the whole shape
-                              0, offsetY + shapesWallsWidth * (3 + i), 
+                              0, offsetY + shapesWallsWidth * (3 + i),
                               0, offsetY + shapesWallsWidth * (3 + i) - bigRadius, sel);
         lineTo(0, offsetY + bigRadius);
         curveTo(0, offsetY + bigRadius, // top right corner of the whole shape
-                0, offsetY, 
+                0, offsetY,
                 bigRadius, offsetY);
         commands.push('Z');
     }
@@ -342,7 +342,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     }
 
     function lineTo(lineToX, lineToY) {
-        commands.push('L'); 
+        commands.push('L');
         coords.push(lineToX, lineToY);
     }
 
@@ -399,7 +399,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         } else if (isDouble) {
             body = new DynamicBarDoubleBody(colorRange, path, pathFeel, pathObject, widhtSampler, heightSampler, dynamicTopBarTupple.inputBoxNewWidth, dynamicTopBarTupple.inputBoxNewHeight, dynamicTopBarTupple.inputX);
             body.firstCavityHeight = shapesWallsWidth;
-        } else { 
+        } else {
             body = new DynamicBarBody(colorRange, path, pathFeel, pathObject, widhtSampler, heightSampler, dynamicTopBarTupple.inputBoxNewWidth, dynamicTopBarTupple.inputBoxNewHeight, dynamicTopBarTupple.inputX);
         }
     } else {
@@ -417,7 +417,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
             body = new Body(colorRange, path, pathFeel, pathObject, samplers, topBarHeight);
         }
     }
-    
+
     let titleA = null;
     let titleB = null;
     let titleC = null;
@@ -426,7 +426,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     let tail = null;
     let tail1 = null;
     let tail2 = null;
-    
+
     pathsCollection = {body: body};
 
     if (headed) {
@@ -582,9 +582,3 @@ let moveUpBlock = new StaticInventoryStepUPBlock();
 let moveDownBlock = new StaticInventoryStepDownBlock();
 let moveLeftBlock = new StaticInventoryStepLeftBlock();
 let moveRightBlock = new StaticInventoryStepRightBlock();
-
-
-
-
-
-
