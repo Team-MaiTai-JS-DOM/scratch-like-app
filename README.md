@@ -1,5 +1,5 @@
 ## Team Mai-Tai  
-![logo ePro](/Project/img/ePro.jpg)
+![logo ePro](/Project/img/ePro.svg)
 
 
 **Project description:** 
