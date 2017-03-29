@@ -582,3 +582,4 @@ let moveUpBlock = new StaticInventoryStepUPBlock();
 let moveDownBlock = new StaticInventoryStepDownBlock();
 let moveLeftBlock = new StaticInventoryStepLeftBlock();
 let moveRightBlock = new StaticInventoryStepRightBlock();
+

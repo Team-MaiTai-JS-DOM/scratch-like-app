@@ -2,6 +2,8 @@ const expect = require("chai").expect;
 const bodiesJSFileImports = require("../script/bodies.js");
 const codingBlocksJSFileImports = require("../script/codingBlocks.js");
 const docsJSFileImports = require("../script/docks.js");
+const separatedColorsJSFileImports = require("../script/separatedColors.js");
+const spriteJSFileImports = require("../script/sprite.js");
 const titlesJSFileImports = require("../script/titles.js");
 
 describe('Unit Tests', () => {
