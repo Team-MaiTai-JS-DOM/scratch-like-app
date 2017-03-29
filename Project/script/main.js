@@ -42,7 +42,7 @@ let offsetToTailX;
 let offsetToTailY
 let myContainerPos;
 let dockedParenPosition;
-let programIsRunning = false
+let programIsRunning = false;
 let main_i;
 let postionOfCreator;
 let parentOfDocked;
@@ -256,7 +256,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
             minTopBarWidth - smallRadius, offsetY + shapesWallsWidth); // bottom left corner of top bar
     topBarHeight = coords[coords.length - 1];
     
-    if (!isDouble && !isTriple) {   // if it is single bar line diretly to the buttom right corner
+    if (!isDouble && !isTriple) {   // if it is single bar line directly to the bottom right corner
         // let test if tail needed first
         if (tailed) {
             extractTuple(startOfDock + widthOfDock, shapesWallsWidth + offsetY);
@@ -278,7 +278,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         let cloneIsTriple = isTriple;
         let i = 0;
         for (; sel < 2 ; i += 2, sel++) {
-            if (sel == 0) {
+            if (sel === 0) {
                 lineTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i), sel);
                 curveTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i),     // top internal corner of the first cavity
                         shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
@@ -501,7 +501,7 @@ function stopProgram() {
 }
 
 function keyDown(e) {
-    if (e.keyCode != 123) e.preventDefault();
+    if (e.keyCode !== 123 && e.keyCode !== 116) e.preventDefault();
 
     if (programIsRunning) {
         for (main_i = 0; main_i < allKeyEvenListeners.length; main_i++)
@@ -510,7 +510,7 @@ function keyDown(e) {
 }
 
 function keyUp(e) {
-    if (e.keyCode != 123) e.preventDefault();
+    if (e.keyCode !== 123 && e.keyCode !== 116) e.preventDefault();
 
     if (programIsRunning) {
         for (main_i = 0; main_i < allKeyEvenListeners.length; main_i++)
@@ -538,7 +538,7 @@ function distance2D(point_1_X, point_1_Y, point_2_X, point_2_Y) {
 function setMeOnTop(self) {
     zIndex = startZIndex + allCodingBlocks.length + 5; // angel number
     for (let i = 0; i < allCodingBlocks.length; i++) {
-        if (self.id != i) {
+        if (self.id !== i) {
             allCodingBlocks[i].container.style.zIndex = startZIndex;
         }
     }
