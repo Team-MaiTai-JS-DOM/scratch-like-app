@@ -149,14 +149,14 @@ class FixedTopBarTripleBody extends TripleBody(Body) {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = (function(){ 
-    return [
-      Body,
-      DynamicBarSingleBody,
-      DoubleBody,
-      TripleBody,
-      FixedTopBarDoubleBody,
-      FixedTopBarTripleBody
-    ]; 
-  })();
+    module.exports = (function(){
+        return [
+            Body,
+            DynamicBarSingleBody,
+            DoubleBody,
+            TripleBody,
+            FixedTopBarDoubleBody,
+            FixedTopBarTripleBody
+        ];
+    })();
 }

@@ -74,7 +74,7 @@ class Sprite {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = (function(){ 
-    return Sprite; 
-  })();
+    module.exports = (function(){
+        return Sprite;
+    })();
 }
