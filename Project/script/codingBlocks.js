@@ -109,22 +109,6 @@ class CodingBlock {
         mouseOffsetX = (e.pageX - startingPosOfTheBlockBeingDragged.left);
         mouseOffsetY = (e.pageY - startingPosOfTheBlockBeingDragged.top);
     }
-
-    action() {
-        //.....
-        if (this.tail !== null && this.tail.dockedNeighbor !== null) {
-            this.tail.dockedNeighbor.JSParent.action();
-        } else {
-            this.loopBack();
-        }
-    }
-
-    loopBack() {
-        //......
-        if (this.head !== null && this.head.dockedNeighbor !== null) {
-            this.head.dockedNeighbor.JSParent.loopBack();
-        }
-    }
 }
 
 function startColorTransitionIN(body) {
@@ -236,6 +220,22 @@ class DraggedCodingBlock extends CodingBlock {
         }
         dragging = false;
     }
+
+    action() {
+        //.....
+        if (this.tail !== null && this.tail.dockedNeighbor !== null) {
+            this.tail.dockedNeighbor.JSParent.action();
+        } else {
+            this.loopBack();
+        }
+    }
+
+    loopBack() {
+        //......
+        if (this.head !== null && this.head.dockedNeighbor !== null) {
+            this.head.dockedNeighbor.JSParent.loopBack();
+        }
+    }
 }
 
 class KeyEventOnceBlock extends DraggedCodingBlock {
@@ -340,12 +340,13 @@ class DelleteableCodingBlock extends DraggedCodingBlock {
             (endingPosOfTheBlockBeingDragged.top > positionOfCoddingGround.top + divCodeGround.clientHeight) ||
             // or if dropped over the trashbin
             (distToTrashBin <= trashBinDistDestroy)) {
-            console.log("deleted");
             this.destroy();
         }
     }
 
     destroy() {
+        this.container.style.top = '-1000px';
+
         // first of all destroy references and detach docks
 
         //allCodingBlocks.splice(this.id, 1);
@@ -537,127 +538,145 @@ class StaticInventoryIfBlock extends StaticInventoryCodingBlock {
     }
 }
 
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
 class StepLeftBlock extends DockingCodingFigure {
-    constructor(x, y) {
+    constructor(x, y, sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP LEFT')], false, false);
-
         super(corpse, svg, x, y);
+        this.sprite = sprite;
     }
 
     action() {
-        if (girl !== 'undefined') {
-            girl.stepLeft();
-        }
+        this.sprite.stepLeft();
         super.action();
     }
 }
+
+///////////////////////////////////////////////////////////////////
 
 class StaticInventoryStepLeftBlock extends StaticInventoryCodingBlock {
-    constructor() {
+    constructor(sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP LEFT')], false, false);
         super(corpse, svg);
+        this.sprite = sprite;
     }
 
     createOneOfMe(x, y) {
-        return new StepLeftBlock(x, y);
+        return new StepLeftBlock(x, y, this.sprite);
     }
 }
+
+///////////////////////////////////////////////////////////////////
 
 class StepRigthBlock extends DockingCodingFigure {
-    constructor(x, y) {
+    constructor(x, y, sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP RIGHT')], false, false);
-
         super(corpse, svg, x, y);
+        this.sprite = sprite;
     }
 
     action() {
-        if (girl !== 'undefined') {
-            girl.stepRight();
-        }
+        this.sprite.stepRight();
         super.action();
     }
 }
+
+///////////////////////////////////////////////////////////////////
 
 class StaticInventoryStepRightBlock extends StaticInventoryCodingBlock {
-    constructor() {
+    constructor(sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP RIGHT')], false, false);
         super(corpse, svg);
+        this.sprite = sprite;
     }
 
     createOneOfMe(x, y) {
-        return new StepRigthBlock(x, y);
+        return new StepRigthBlock(x, y, this.sprite);
     }
 }
+
+///////////////////////////////////////////////////////////////////
 
 class StepUPBlock extends DockingCodingFigure {
-    constructor(x, y) {
+    constructor(x, y, sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP UP')], false, false);
-
         super(corpse, svg, x, y);
+        this.sprite = sprite;
     }
 
     action() {
-        if (girl !== 'undefined') {
-            girl.stepUp();
-        }
+        this.sprite.stepUp();
         super.action();
     }
 }
+
+///////////////////////////////////////////////////////////////////
 
 class StaticInventoryStepUPBlock extends StaticInventoryCodingBlock {
-    constructor() {
+    constructor(sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP UP')], false, false);
         super(corpse, svg);
+        this.sprite = sprite;
     }
 
     createOneOfMe(x, y) {
-        return new StepUPBlock(x, y);
+        return new StepUPBlock(x, y, this.sprite);
     }
 }
 
+///////////////////////////////////////////////////////////////////
+
 class StepDownBlock extends DockingCodingFigure {
-    constructor(x, y) {
+    constructor(x, y, sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP DOWN')], false, false);
-
         super(corpse, svg, x, y);
+        this.sprite = sprite;
     }
 
     action() {
-        if (girl !== 'undefined') {
-            girl.stepDown();
-        }
+        this.sprite.stepDown();
         super.action();
     }
 }
 
+///////////////////////////////////////////////////////////////////
+
 class StaticInventoryStepDownBlock extends StaticInventoryCodingBlock {
-    constructor() {
+    constructor(sprite) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY + heightOfBumb, 'STEP DOWN')], false, false);
         super(corpse, svg);
+        this.sprite = sprite;
     }
 
     createOneOfMe(x, y) {
-        return new StepDownBlock(x, y);
+        return new StepDownBlock(x, y, this.sprite);
     }
 }
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 class StartBlock extends DelleteableCodingBlock {
     constructor(x, y) {
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        let corpse = CreateShape(svg, loopsColor, false, true, [new Title(svg, shapesWallsWidth, titleOffsetX, titleOffsetY, 'START')], false, false);
+        let corpse = CreateShape(svg, loopsColor, false, true, [new Title(svg, shapesWallsWidth, titleOffsetY, 'START')], false, false);
         super(corpse, svg, x, y);
+
+        let self = this;
+
+        document.getElementById('startButton').addEventListener('mousedown', function() {
+            self.action();
+        });
     }
 }
 
@@ -833,8 +852,39 @@ class StaticInventoryKeyDownOnceBlock extends StaticInventoryCodingBlock {
     }
 }
 
+class AnimateBlock extends DockingCodingFigure {
+    constructor(x, y, sprite) {
+        let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY, 'ANIMATE')], false, false);
+        super(corpse, svg, x, y, 40);
+        this.sprite = sprite;
+    }
+
+    action() {
+        this.sprite.animationPlay();
+        super.action();
+    }
+}
+
+class StaticInventoryAnimateBlock extends StaticInventoryCodingBlock {
+    constructor(sprite) {
+        let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        let corpse = CreateShape(svg, loopsColor, true, true, [new Title(svg, shapesWallsWidth, titleOffsetY, 'ANIMATE')], false, false);
+        super(corpse, svg);
+        this.sprite = sprite;
+    }
+
+    createOneOfMe(x, y) {
+        return new AnimateBlock(x, y, this.sprite);
+    }
+}
+
+
+
+
+
 if (typeof module !== 'undefined') {
-  module.exports = (function(){
+  module.exports = (function(){ 
     return [
       CodingBlock,
       StaticInventoryCodingBlock,
@@ -850,6 +900,6 @@ if (typeof module !== 'undefined') {
       IfBlock,
       StaticInventoryIfBlock,
       StepLeftBlock
-    ];
+    ]; 
   })();
 }

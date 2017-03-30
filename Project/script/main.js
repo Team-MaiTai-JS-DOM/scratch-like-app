@@ -5,11 +5,17 @@ const inventory = document.getElementById('inventory');
 const buttonsDiv = document.getElementById('upperButtonsDiv');
 const spritesDiv = document.getElementById('previewSprites');
 
+var allImageCoddingBlocks = []; // unused, just making sure GC will not nuke the IMGcoddingBlocks objects
+var allAnimationEventListeners = [];
+var allLoadedSpriteImagesAsPaths = [];
+var allLoadedSpriteImagesAsObjects = [];
+var repaintOfCanvasRequestedDueMoving = false;
+var repaintOfCanvasRequestedDueAnimation = false;
+
 let buttonsDivHeight = 40;
 let canvasPreviewHeight;
 let canvasRatio = 3 / 4;
 let canvasHeight, canvasWidth;
-let horizontalBias = 0;
 let maxDockingReactionDistance = 50;
 let minDockingDistance = 10;
 let maxTrashBinReactionDistance = 100;
@@ -101,12 +107,12 @@ function getSmalRadius(shapesWallsWidth) {
 }
 
 function resize() {
-    canvasWidth = divPreview.clientWidth + horizontalBias;
+    canvasWidth = divPreview.clientWidth;
     canvasHeight = canvasWidth * canvasRatio;
     canvasPreview.width = canvasWidth;
     canvasPreview.height = canvasHeight;
 
-    spritesDiv.style.top = canvasHeight + 200 + 'px';
+    spritesDiv.style.top = window.innerHeight - spritesDiv.clientHeight + 'px';
 
     canvasPreviewHeight = (window.innerHeight / 2 - canvasHeight / 2);
     canvasPreview.style.top = canvasPreviewHeight + 'px';
@@ -427,7 +433,7 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     let tail1 = null;
     let tail2 = null;
 
-    let pathsCollection = {body: body};
+    pathsCollection = {body: body};
 
     if (headed) {
         head = new Head(svg);
@@ -489,8 +495,17 @@ function startProgram() {
 
 function programLoop() {
     if (programIsRunning) {
-        for (main_i = 0; main_i < allKeyEvenListenersPools.length; main_i++)
+        for (main_i = 0; main_i < allKeyEvenListenersPools.length; main_i++) {
             allKeyEvenListenersPools[main_i].keyEventPool();
+        }
+
+        for (main_i = 0; main_i < allAnimationEventListeners.length; main_i++) {
+            allAnimationEventListeners[main_i].animateTo();
+        }
+
+        if (repaintOfCanvasRequestedDueAnimation || repaintOfCanvasRequestedDueMoving) {
+            repaintAllIMGsOnCanvas();
+        }
         window.requestAnimationFrame(programLoop);
     }
 }
@@ -557,10 +572,6 @@ function setMeOnTop(self) {
     buttonsDiv.style.zIndex = zIndex + 4;
     spritesDiv.style.zIndex = zIndex + 4;
 }
-let imgGirl = document.getElementById('girl');
-let imgVader = document.getElementById('vader');
-let girl = new Sprite(imgGirl, 100, 100);
-let vader = new Sprite(imgVader, 120, 100);
 
 // populate the inventory table
 let startBlock = new StaticInventoryStartBlock();
@@ -577,9 +588,3 @@ let keyUpOnceBlock = new StaticInventoryKeyUpOnceBlock();
 let keyDownOnceBlock = new StaticInventoryKeyDownOnceBlock();
 let keyLeftOnceBlock = new StaticInventoryKeyLeftOnceBlock();
 let keyRightOnceBlock = new StaticInventoryKeyRightOnceBlock();
-
-let moveUpBlock = new StaticInventoryStepUPBlock();
-let moveDownBlock = new StaticInventoryStepDownBlock();
-let moveLeftBlock = new StaticInventoryStepLeftBlock();
-let moveRightBlock = new StaticInventoryStepRightBlock();
-

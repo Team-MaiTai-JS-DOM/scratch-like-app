@@ -25,11 +25,11 @@ class LeftTitle extends Title {   // example: the "times" of "repeat times"
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = (function(){
+  module.exports = (function(){ 
     return [
       Title,
       LeftTitle
-    ];
+    ]; 
   })();
 }
 
