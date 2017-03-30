@@ -325,6 +325,10 @@ class DelleteableCodingBlock extends DraggedCodingBlock {
 
         if (distToTrashBin < maxTrashBinReactionDistance) {
             this.container.style.opacity = interpolateValues(minOpacityForAll, maxOpacityForAll, 1 / (maxTrashBinReactionDistance / distToTrashBin)).toFixed(2);
+            trashBin.src = "img/trashbinopen.png";
+        }
+        if (distToTrashBin > maxTrashBinReactionDistance) {
+            trashBin.src = "img/trashbin.png"
         }
     }
 
