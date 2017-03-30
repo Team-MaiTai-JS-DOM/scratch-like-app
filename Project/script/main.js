@@ -1,65 +1,74 @@
-const canvasPreview = document.getElementById('previewCanvas');
-const divPreview = document.getElementById('previewDiv');
-const divCodeGround = document.getElementById('codeGround');
-const inventory = document.getElementById('inventory');
-const buttonsDiv = document.getElementById('upperButtonsDiv');
-const spritesDiv = document.getElementById('previewSprites');
+'use strict';
 
-let buttonsDivHeight = 40;
-let canvasPreviewHeight;
-let canvasRatio = 3 / 4;
-let canvasHeight, canvasWidth;
-let horizontalBias = 0;
-let maxDockingReactionDistance = 50;
-let minDockingDistance = 10;
-let maxTrashBinReactionDistance = 100;
-let trashBinDistDestroy = 70;
-let dragging = false;
-let creatorMode = false;
-let mouseOffsetX = 0;
-let mouseOffsetY = 0;
-let blockOnFocus = null;
-let trashBin = document.getElementById('trashbin');
-let trashBinWidth = trashBin.width;
-let trashBinHeight = trashBin.height;
-let trashBinX;
-let trashBinY;
-let trashBinCenterX;
-let trashBinCenterY;
-let zIndex;
-let staticShapesTopMargin = 20;
-let staticShapesLeftMargin = 20;
-let currentOffsetInInventory = staticShapesTopMargin;
-let startingPosOfTheBlockBeingDragged;
-let currentPosOfTheBlockBeingDragged;
-let endingPosOfTheBlockBeingDragged;
-let positionOfCoddingGround;
-let distToTrashBin;
-let shortestDist;
-let distance;
-let nearestTail;
-let offsetToTailX;
-let offsetToTailY
-let myContainerPos;
-let dockedParenPosition;
-let programIsRunning = false;
-let main_i;
-let postionOfCreator;
-let parentOfDocked;
+var canvasPreview = document.getElementById('previewCanvas');
+var divPreview = document.getElementById('previewDiv');
+var divCodeGround = document.getElementById('codeGround');
+var inventory = document.getElementById('inventory');
+var buttonsDiv = document.getElementById('upperButtonsDiv');
+var spritesDiv = document.getElementById('previewSprites');
 
-let minOpacityForAll = 0.2;
-let maxOpacityForAll = 1;
+var allImageCoddingBlocks = []; // unused, just making sure GC will not nuke the IMGcoddingBlocks objects
+var allAnimationEventListeners = [];
+var allLoadedSpriteImagesAsPaths = [];
+var allLoadedSpriteImagesAsObjects = [];
+var repaintOfCanvasRequestedDueMoving = false;
+var repaintOfCanvasRequestedDueAnimation = false;
 
-let ctx2D = canvasPreview.getContext('2d');
+var buttonsDivHeight = 40;
+var canvasPreviewHeight = void 0;
+var canvasRatio = 3 / 4;
+var canvasHeight = void 0,
+    canvasWidth = void 0;
+var maxDockingReactionDistance = 50;
+var minDockingDistance = 10;
+var maxTrashBinReactionDistance = 100;
+var trashBinDistDestroy = 70;
+var dragging = false;
+var creatorMode = false;
+var mouseOffsetX = 0;
+var mouseOffsetY = 0;
+var blockOnFocus = null;
+var trashBin = document.getElementById('trashbin');
+var trashBinWidth = trashBin.width;
+var trashBinHeight = trashBin.height;
+var trashBinX = void 0;
+var trashBinY = void 0;
+var trashBinCenterX = void 0;
+var trashBinCenterY = void 0;
+var zIndex = void 0;
+var staticShapesTopMargin = 20;
+var staticShapesLeftMargin = 20;
+var currentOffsetInInventory = staticShapesTopMargin;
+var startingPosOfTheBlockBeingDragged = void 0;
+var currentPosOfTheBlockBeingDragged = void 0;
+var endingPosOfTheBlockBeingDragged = void 0;
+var positionOfCoddingGround = void 0;
+var distToTrashBin = void 0;
+var shortestDist = void 0;
+var distance = void 0;
+var nearestTail = void 0;
+var offsetToTailX = void 0;
+var offsetToTailY = void 0;
+var myContainerPos = void 0;
+var dockedParenPosition = void 0;
+var programIsRunning = false;
+var main_i = void 0;
+var postionOfCreator = void 0;
+var parentOfDocked = void 0;
 
-let uniqueID = 0;
+var minOpacityForAll = 0.2;
+var maxOpacityForAll = 1;
+
+var ctx2D = canvasPreview.getContext('2d');
+
+var uniqueID = 0;
 
 // find the base zeta index of all
-let startZIndex = 0;
+var startZIndex = 0;
 (function () {
-    let elements = document.getElementsByTagName("*");
+    var elements = document.getElementsByTagName("*");
 
-    for (let i = 0; i < elements.length - 1; i++) {
+    for (var i = 0; i < elements.length - 1; i++) {
         if (parseInt(elements[i].style.zIndex) > startZIndex) {
             startZIndex = parseInt(elements[i].style.zIndex);
         }
@@ -69,25 +78,25 @@ let startZIndex = 0;
 startZIndex++;
 
 // design of the docking shape
-let widthOfDock = 50;
-let startOfBumb = 15;
-let heightOfBumb = 5;
-let lengthOfBumb = widthOfDock - startOfBumb * 2;
-let startOfDock = 35;
+var widthOfDock = 50;
+var startOfBumb = 15;
+var heightOfBumb = 5;
+var lengthOfBumb = widthOfDock - startOfBumb * 2;
+var startOfDock = 35;
 
 // design of the body shape
-let titlesColor = '#d6d8a0';
-let minTopBarWidth = 150;
-let shapesWallsWidth = 25;
-let bigRadius = 20;
-let titleOffsetX = shapesWallsWidth;
-let titleOffsetY = 18;
-let smallRadius = getSmalRadius(shapesWallsWidth);
-let minInputfield = shapesWallsWidth / (8/10);
+var titlesColor = '#d6d8a0';
+var minTopBarWidth = 150;
+var shapesWallsWidth = 25;
+var bigRadius = 20;
+var titleOffsetX = shapesWallsWidth;
+var titleOffsetY = 18;
+var smallRadius = getSmalRadius(shapesWallsWidth);
+var minInputfield = shapesWallsWidth / (8 / 10);
 
-let dockLineWidth = 2;
+var dockLineWidth = 2;
 
-let blocksColorTransitionStep = 0.08;
+var blocksColorTransitionStep = 0.08;
 
 canvasPreview.style.left = '0px';
 
@@ -101,30 +110,30 @@ function getSmalRadius(shapesWallsWidth) {
 }
 
 function resize() {
-    canvasWidth = divPreview.clientWidth + horizontalBias;
+    canvasWidth = divPreview.clientWidth;
     canvasHeight = canvasWidth * canvasRatio;
     canvasPreview.width = canvasWidth;
     canvasPreview.height = canvasHeight;
 
-    spritesDiv.style.top = canvasHeight + 200 + 'px';
+    spritesDiv.style.top = window.innerHeight - spritesDiv.clientHeight + 'px';
 
-    canvasPreviewHeight = (window.innerHeight / 2 - canvasHeight / 2);
+    canvasPreviewHeight = window.innerHeight / 2 - canvasHeight / 2;
     canvasPreview.style.top = canvasPreviewHeight + 'px';
-    buttonsDiv.style.top = (canvasPreviewHeight - buttonsDivHeight) + 'px';
+    buttonsDiv.style.top = canvasPreviewHeight - buttonsDivHeight + 'px';
 
     trashBinX = divCodeGround.clientWidth - trashBinWidth;
     trashBinY = divCodeGround.clientHeight - trashBinHeight;
     trashBin.style.left = trashBinX + 'px'; //relative to container
-    trashBin.style.top = trashBinY + 'px';  //
+    trashBin.style.top = trashBinY + 'px'; //
     trashBinCenterX = trashBinX + trashBinWidth / 2;
     trashBinCenterY = trashBinY + trashBinHeight / 2;
 
     positionOfCoddingGround = divCodeGround.getBoundingClientRect();
 }
 
-let allCodingBlocks = [];       // please don't re-order this one! NEVER!!!
-let allKeyEvenListeners = [];
-let allKeyEvenListenersPools = [];
+var allCodingBlocks = []; // please don't re-order this one! NEVER!!!
+var allKeyEvenListeners = [];
+var allKeyEvenListenersPools = [];
 
 function mergeBackToColor(rChannel, gChannel, bChannel) {
     if (rChannel > 255) {
@@ -143,19 +152,15 @@ function mergeBackToColor(rChannel, gChannel, bChannel) {
         bChannel = 0;
     }
 
-    let R = '00' + Math.round(rChannel).toString(16).toUpperCase();
-    let G = '00' + Math.round(gChannel).toString(16).toUpperCase();
-    let B = '00' + Math.round(bChannel).toString(16).toUpperCase();
+    var R = '00' + Math.round(rChannel).toString(16).toUpperCase();
+    var G = '00' + Math.round(gChannel).toString(16).toUpperCase();
+    var B = '00' + Math.round(bChannel).toString(16).toUpperCase();
 
-    return R.substr(R.length - 2, 2) +
-           G.substr(G.length - 2, 2) +
-           B.substr(B.length - 2, 2);
+    return R.substr(R.length - 2, 2) + G.substr(G.length - 2, 2) + B.substr(B.length - 2, 2);
 }
 
 function interpolateColors(colorObject, factor) {
-    return mergeBackToColor(interpolateValues(colorObject.inRchannel, colorObject.outRchannel, factor),
-                            interpolateValues(colorObject.inGchannel, colorObject.outGchannel, factor),
-                            interpolateValues(colorObject.inBchannel, colorObject.outBchannel, factor));
+    return mergeBackToColor(interpolateValues(colorObject.inRchannel, colorObject.outRchannel, factor), interpolateValues(colorObject.inGchannel, colorObject.outGchannel, factor), interpolateValues(colorObject.inBchannel, colorObject.outBchannel, factor));
 }
 
 function interpolateValues(valueIn, valueOut, factor) {
@@ -165,41 +170,30 @@ function interpolateValues(valueIn, valueOut, factor) {
 function getDockingPathNumerical(startOfShapeX, startOfShapeY) {
     return {
         commands: ['L', 'C'],
-        coords:
-        [(startOfShapeX + startOfBumb), startOfShapeY,
-        (startOfShapeX + startOfBumb), startOfShapeY,
-        (startOfShapeX + startOfBumb + lengthOfBumb / 2), (startOfShapeY - heightOfBumb),
-        (startOfShapeX + startOfBumb + lengthOfBumb), startOfShapeY]
+        coords: [startOfShapeX + startOfBumb, startOfShapeY, startOfShapeX + startOfBumb, startOfShapeY, startOfShapeX + startOfBumb + lengthOfBumb / 2, startOfShapeY - heightOfBumb, startOfShapeX + startOfBumb + lengthOfBumb, startOfShapeY]
     };
 }
 
 function getDockingPathReverseNum(startOfShapeX, startOfShapeY, commands, coords) {
     return {
         commands: ['L', 'C'],
-        coords:
-            [(startOfShapeX - startOfBumb), startOfShapeY,
-             (startOfShapeX - startOfBumb), startOfShapeY,
-             (startOfShapeX - startOfBumb - lengthOfBumb / 2), (startOfShapeY - heightOfBumb),
-             (startOfShapeX - startOfBumb - lengthOfBumb), startOfShapeY]
+        coords: [startOfShapeX - startOfBumb, startOfShapeY, startOfShapeX - startOfBumb, startOfShapeY, startOfShapeX - startOfBumb - lengthOfBumb / 2, startOfShapeY - heightOfBumb, startOfShapeX - startOfBumb - lengthOfBumb, startOfShapeY]
     };
 }
 
 function getStringPathFromNumerical(numPathCommandObject) {
-    let commandAsString = '';
-    let currentOffsetInCoord = 0;
-    for (let commandIndex = 0; commandIndex < numPathCommandObject.commands.length; commandIndex++) {
+    var commandAsString = '';
+    var currentOffsetInCoord = 0;
+    for (var commandIndex = 0; commandIndex < numPathCommandObject.commands.length; commandIndex++) {
         commandAsString += numPathCommandObject.commands[commandIndex] + ' ';
-        switch(numPathCommandObject.commands[commandIndex]) {
+        switch (numPathCommandObject.commands[commandIndex]) {
             case 'M':
             case 'L':
-                commandAsString +=
-                    numPathCommandObject.coords[currentOffsetInCoord++] + ',' +
-                    numPathCommandObject.coords[currentOffsetInCoord++] + ' ';
+                commandAsString += numPathCommandObject.coords[currentOffsetInCoord++] + ',' + numPathCommandObject.coords[currentOffsetInCoord++] + ' ';
                 break;
             case 'C':
-                for (let lengthOf_C_coord = 0; lengthOf_C_coord < 5; lengthOf_C_coord++) {
-                    commandAsString +=
-                        numPathCommandObject.coords[currentOffsetInCoord++] + ',';
+                for (var lengthOf_C_coord = 0; lengthOf_C_coord < 5; lengthOf_C_coord++) {
+                    commandAsString += numPathCommandObject.coords[currentOffsetInCoord++] + ',';
                 }
                 commandAsString += numPathCommandObject.coords[currentOffsetInCoord++] + ' ';
                 break;
@@ -209,7 +203,7 @@ function getStringPathFromNumerical(numPathCommandObject) {
 }
 
 function clampZeroOne(value) {
-    let clampedValue = value;
+    var clampedValue = value;
     if (clampedValue > 1) {
         clampedValue = 1;
     } else if (clampedValue < 0) {
@@ -220,43 +214,42 @@ function clampZeroOne(value) {
 
 function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple, dynamicTopBarTupple) {
 
-    let widhtSampler;
-    let heightSampler;
-    let topBarHeight;
+    var widhtSampler = void 0;
+    var heightSampler = void 0;
+    var topBarHeight = void 0;
 
-    let secondBarSamplers = [];
-    let thirdBarSamplers = [];
+    var secondBarSamplers = [];
+    var thirdBarSamplers = [];
 
-    let sel = 0;
-    let addressMe = [secondBarSamplers, thirdBarSamplers];
+    var sel = 0;
+    var addressMe = [secondBarSamplers, thirdBarSamplers];
 
     // create the path object here
 
-    let pathTuple;
-    let coords = [];
-    let commands = ['M'];   // start each filled path with move-to-ABS-pos command
+    var pathTuple = void 0;
+    var coords = [];
+    var commands = ['M']; // start each filled path with move-to-ABS-pos command
 
-    let offsetY = 0;
-    if (headed) {   // if headed, add that dock element on top
+    var offsetY = 0;
+    if (headed) {
+        // if headed, add that dock element on top
         offsetY = heightOfBumb;
         pathTuple = getDockingPathNumerical(startOfDock, offsetY);
-        for (let i = 0; i < pathTuple.coords.length; i++)
+        for (var i = 0; i < pathTuple.coords.length; i++) {
             coords.push(pathTuple.coords[i]);
-        commands.push('C', 'L');
+        }commands.push('C', 'L');
     }
     coords.push(minTopBarWidth - smallRadius, offsetY);
 
-    curveTo(minTopBarWidth - smallRadius, offsetY,   // top left corner of top bar
-            minTopBarWidth, offsetY,
-            minTopBarWidth, offsetY + smallRadius);
+    curveTo(minTopBarWidth - smallRadius, offsetY, // top left corner of top bar
+    minTopBarWidth, offsetY, minTopBarWidth, offsetY + smallRadius);
     widhtSampler = coords.length - 2;
     lineTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius);
-    curveTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius,
-            minTopBarWidth, offsetY + shapesWallsWidth,
-            minTopBarWidth - smallRadius, offsetY + shapesWallsWidth); // bottom left corner of top bar
+    curveTo(minTopBarWidth, offsetY + shapesWallsWidth - smallRadius, minTopBarWidth, offsetY + shapesWallsWidth, minTopBarWidth - smallRadius, offsetY + shapesWallsWidth); // bottom left corner of top bar
     topBarHeight = coords[coords.length - 1];
 
-    if (!isDouble && !isTriple) {   // if it is single bar line directly to the bottom right corner
+    if (!isDouble && !isTriple) {
+        // if it is single bar line directly to the bottom right corner
         // let test if tail needed first
         if (tailed) {
             extractTuple(startOfDock + widthOfDock, shapesWallsWidth + offsetY);
@@ -265,78 +258,70 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         heightSampler = coords.length - 1;
 
         curveTo(smallRadius, offsetY + shapesWallsWidth, // bottom right corner of single top bar
-                0, offsetY + shapesWallsWidth,
-                0, offsetY + shapesWallsWidth - smallRadius);
+        0, offsetY + shapesWallsWidth, 0, offsetY + shapesWallsWidth - smallRadius);
         lineTo(0, smallRadius);
-        curveTo(0, offsetY + smallRadius,
-                0, offsetY,
-                0 + smallRadius, offsetY);  // upper right corner of single top bar
+        curveTo(0, offsetY + smallRadius, 0, offsetY, 0 + smallRadius, offsetY); // upper right corner of single top bar
         commands.push('Z'); // close path and hopefully it will not explode
     } else {
         extractTuple(shapesWallsWidth + startOfDock + widthOfDock, shapesWallsWidth + offsetY, commands, coords);
 
-        let cloneIsTriple = isTriple;
-        let i = 0;
-        for (; sel < 2 ; i += 2, sel++) {
+        var cloneIsTriple = isTriple;
+        var _i = 0;
+        for (; sel < 2; _i += 2, sel++) {
             if (sel === 0) {
-                lineTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i), sel);
-                curveTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i),     // top internal corner of the first cavity
-                        shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
-                        shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i) + smallRadius, sel);
+                lineTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + _i), sel);
+                curveTo(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + _i), // top internal corner of the first cavity
+                shapesWallsWidth, offsetY + shapesWallsWidth * (1 + _i), shapesWallsWidth, offsetY + shapesWallsWidth * (1 + _i) + smallRadius, sel);
             } else {
-                lineToAndPush(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i), 0);
-                curveToAndPushSampler(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + i),     // top internal corner of the first cavity
-                                      shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i),
-                                      shapesWallsWidth, offsetY + shapesWallsWidth * (1 + i) + smallRadius, 0);
+                lineToAndPush(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + _i), 0);
+                curveToAndPushSampler(shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (1 + _i), // top internal corner of the first cavity
+                shapesWallsWidth, offsetY + shapesWallsWidth * (1 + _i), shapesWallsWidth, offsetY + shapesWallsWidth * (1 + _i) + smallRadius, 0);
             }
-            lineToAndPush(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i) - smallRadius, sel);
-            curveToAndPushSampler(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i) - smallRadius, // bottom internal corner of the first cavity
-                                  shapesWallsWidth, offsetY + shapesWallsWidth * (2 + i),
-                                  shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
-            lineToAndPush(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + i), sel);
-            curveToAndPushSampler(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + i), // top left corner of the second bar
-                                  minTopBarWidth, offsetY + shapesWallsWidth * (2 + i),
-                                  minTopBarWidth, offsetY + shapesWallsWidth * (2 + i) + smallRadius, sel);
-            lineToAndPush(minTopBarWidth, offsetY + shapesWallsWidth * (3 + i) - smallRadius, sel);
-            curveToAndPushSampler(minTopBarWidth, offsetY + shapesWallsWidth * (3 + i) - smallRadius, // bottom left corner of the second bar
-                                  minTopBarWidth, offsetY + shapesWallsWidth * (3 + i),
-                                  minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (3 + i), sel);
-            if (!cloneIsTriple) {     // it needs a dock on the top of the second cavity wich is little but to the left
+            lineToAndPush(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + _i) - smallRadius, sel);
+            curveToAndPushSampler(shapesWallsWidth, offsetY + shapesWallsWidth * (2 + _i) - smallRadius, // bottom internal corner of the first cavity
+            shapesWallsWidth, offsetY + shapesWallsWidth * (2 + _i), shapesWallsWidth + smallRadius, offsetY + shapesWallsWidth * (2 + _i), sel);
+            lineToAndPush(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + _i), sel);
+            curveToAndPushSampler(minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (2 + _i), // top left corner of the second bar
+            minTopBarWidth, offsetY + shapesWallsWidth * (2 + _i), minTopBarWidth, offsetY + shapesWallsWidth * (2 + _i) + smallRadius, sel);
+            lineToAndPush(minTopBarWidth, offsetY + shapesWallsWidth * (3 + _i) - smallRadius, sel);
+            curveToAndPushSampler(minTopBarWidth, offsetY + shapesWallsWidth * (3 + _i) - smallRadius, // bottom left corner of the second bar
+            minTopBarWidth, offsetY + shapesWallsWidth * (3 + _i), minTopBarWidth - smallRadius, offsetY + shapesWallsWidth * (3 + _i), sel);
+            if (!cloneIsTriple) {
+                // it needs a dock on the top of the second cavity wich is little but to the left
                 if (tailed) {
-                    extractTupleAndPush(startOfDock + widthOfDock, offsetY + shapesWallsWidth * (3 + i), sel);
+                    extractTupleAndPush(startOfDock + widthOfDock, offsetY + shapesWallsWidth * (3 + _i), sel);
                 }
                 break;
             }
-            extractTupleAndPush(shapesWallsWidth + startOfDock + widthOfDock, offsetY + shapesWallsWidth * (3 + i), sel);
+            extractTupleAndPush(shapesWallsWidth + startOfDock + widthOfDock, offsetY + shapesWallsWidth * (3 + _i), sel);
             cloneIsTriple = false;
         }
 
-        lineToAndPush(bigRadius, offsetY + shapesWallsWidth * (3 + i), sel);
+        lineToAndPush(bigRadius, offsetY + shapesWallsWidth * (3 + _i), sel);
         heightSampler = coords.length - 1;
-        curveToAndPushSampler(bigRadius, offsetY + shapesWallsWidth * (3 + i), // bottom right corner of the whole shape
-                              0, offsetY + shapesWallsWidth * (3 + i),
-                              0, offsetY + shapesWallsWidth * (3 + i) - bigRadius, sel);
+        curveToAndPushSampler(bigRadius, offsetY + shapesWallsWidth * (3 + _i), // bottom right corner of the whole shape
+        0, offsetY + shapesWallsWidth * (3 + _i), 0, offsetY + shapesWallsWidth * (3 + _i) - bigRadius, sel);
         lineTo(0, offsetY + bigRadius);
         curveTo(0, offsetY + bigRadius, // top right corner of the whole shape
-                0, offsetY,
-                bigRadius, offsetY);
+        0, offsetY, bigRadius, offsetY);
         commands.push('Z');
     }
 
     function extractTuple(startX, startY) {
         pathTuple = getDockingPathReverseNum(startX, startY);
-        for (let i = 0; i < pathTuple.commands.length; i++)
-            commands.push(pathTuple.commands[i]);
-        for (let i = 0; i < pathTuple.coords.length; i += 2)
-            coords.push(pathTuple.coords[i], pathTuple.coords[i + 1]);
+        for (var _i2 = 0; _i2 < pathTuple.commands.length; _i2++) {
+            commands.push(pathTuple.commands[_i2]);
+        }for (var _i3 = 0; _i3 < pathTuple.coords.length; _i3 += 2) {
+            coords.push(pathTuple.coords[_i3], pathTuple.coords[_i3 + 1]);
+        }
     }
 
     function extractTupleAndPush(startX, startY, sel) {
         pathTuple = getDockingPathReverseNum(startX, startY);
-        for (let i = 0; i < pathTuple.commands.length; i++)
-            commands.push(pathTuple.commands[i]);
-        for (let i = 0; i < pathTuple.coords.length; i += 2) {
-            coords.push(pathTuple.coords[i], pathTuple.coords[i + 1]);
+        for (var _i4 = 0; _i4 < pathTuple.commands.length; _i4++) {
+            commands.push(pathTuple.commands[_i4]);
+        }for (var _i5 = 0; _i5 < pathTuple.coords.length; _i5 += 2) {
+            coords.push(pathTuple.coords[_i5], pathTuple.coords[_i5 + 1]);
             addressMe[sel].push(coords.length - 1);
         }
     }
@@ -365,21 +350,21 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         addressMe[sel].push(coords.length - 1);
     }
 
-    let pathObject = { commands, coords };
+    var pathObject = { commands: commands, coords: coords };
 
-    let stringFromNumPath = getStringPathFromNumerical(pathObject);
+    var stringFromNumPath = getStringPathFromNumerical(pathObject);
 
-    let path = document.createElementNS(svg.namespaceURI, 'path');
+    var path = document.createElementNS(svg.namespaceURI, 'path');
     svg.appendChild(path);
     path.setAttribute('stroke', 'none');
     path.setAttribute('opacity', 1);
     path.setAttribute('fill', loopsColor.inColor);
 
-    for (let i = 0; i < titles.length; i++) {
-        svg.appendChild(titles[i].textEl);
+    for (var _i6 = 0; _i6 < titles.length; _i6++) {
+        svg.appendChild(titles[_i6].textEl);
     }
 
-    let pathFeel = document.createElementNS(svg.namespaceURI, 'path');
+    var pathFeel = document.createElementNS(svg.namespaceURI, 'path');
     svg.appendChild(pathFeel);
     pathFeel.setAttribute('id', uniqueID++);
     pathFeel.setAttribute('stroke', 'none');
@@ -388,10 +373,11 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     pathFeel.setAttribute('class', 'codingblocktitle');
     pathFeel.setAttribute('d', stringFromNumPath);
 
-    let body = null;
-    let samplers = { widhtSampler: widhtSampler, heightSampler: heightSampler };
+    var body = null;
+    var samplers = { widhtSampler: widhtSampler, heightSampler: heightSampler };
 
-    if (arguments > 8) { // its top bar is resizeable
+    if (arguments > 8) {
+        // its top bar is resizeable
         if (isTriple) {
             body = new DynamicBarTripleBody(colorRange, path, pathFeel, pathObject, widhtSampler, heightSampler, dynamicTopBarTupple.inputBoxNewWidth, dynamicTopBarTupple.inputBoxNewHeight, dynamicTopBarTupple.inputX);
             body.firstCavityHeight = shapesWallsWidth;
@@ -418,16 +404,16 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
         }
     }
 
-    let titleA = null;
-    let titleB = null;
-    let titleC = null;
+    var titleA = null;
+    var titleB = null;
+    var titleC = null;
 
-    let head = null;
-    let tail = null;
-    let tail1 = null;
-    let tail2 = null;
+    var head = null;
+    var tail = null;
+    var tail1 = null;
+    var tail2 = null;
 
-    let pathsCollection = {body: body};
+    var pathsCollection = { body: body };
 
     if (headed) {
         head = new Head(svg);
@@ -446,13 +432,13 @@ function CreateShape(svg, colorRange, headed, tailed, titles, isDouble, isTriple
     }
 
     if (isTriple) {
-        let tail1 = new ConcavityTailFirst(svg, offsetY + shapesWallsWidth);
-        let tail2 = new ConcavityTailSecond(svg, offsetY + shapesWallsWidth * 3);
-        pathsCollection.tail1 = tail1;
-        pathsCollection.tail2 = tail2;
+        var _tail = new ConcavityTailFirst(svg, offsetY + shapesWallsWidth);
+        var _tail2 = new ConcavityTailSecond(svg, offsetY + shapesWallsWidth * 3);
+        pathsCollection.tail1 = _tail;
+        pathsCollection.tail2 = _tail2;
     } else if (isDouble) {
-        let tail1 = new ConcavityTailFirst(svg, offsetY + shapesWallsWidth);
-        pathsCollection.tail1 = tail1;
+        var _tail3 = new ConcavityTailFirst(svg, offsetY + shapesWallsWidth);
+        pathsCollection.tail1 = _tail3;
     }
 
     return pathsCollection;
@@ -464,10 +450,10 @@ function redrawSVG(coddingBlock) {
     coddingBlock.svg.setAttribute('width', coddingBlock.body.width);
     coddingBlock.body.path.setAttribute('d', getStringPathFromNumerical(coddingBlock.body.numericalPath));
     coddingBlock.body.pathFeel.setAttribute('d', getStringPathFromNumerical(coddingBlock.body.numericalPath));
-    if (coddingBlock.head !== null)
-        coddingBlock.head.movePathPosition(coddingBlock.head.startOfShapeY);
-    for (let i = 0; i < coddingBlock.tails.length; i++)
+    if (coddingBlock.head !== null) coddingBlock.head.movePathPosition(coddingBlock.head.startOfShapeY);
+    for (var i = 0; i < coddingBlock.tails.length; i++) {
         coddingBlock.tails[i].movePathPosition(coddingBlock.tails[i].startOfShapeY);
+    }
 }
 
 //////////////////////////////////////////////////////////////////
@@ -489,8 +475,17 @@ function startProgram() {
 
 function programLoop() {
     if (programIsRunning) {
-        for (main_i = 0; main_i < allKeyEvenListenersPools.length; main_i++)
+        for (main_i = 0; main_i < allKeyEvenListenersPools.length; main_i++) {
             allKeyEvenListenersPools[main_i].keyEventPool();
+        }
+
+        for (main_i = 0; main_i < allAnimationEventListeners.length; main_i++) {
+            allAnimationEventListeners[main_i].animateTo();
+        }
+
+        if (repaintOfCanvasRequestedDueAnimation || repaintOfCanvasRequestedDueMoving) {
+            repaintAllIMGsOnCanvas();
+        }
         window.requestAnimationFrame(programLoop);
     }
 }
@@ -504,8 +499,9 @@ function keyDown(e) {
     if (e.keyCode !== 123 && e.keyCode !== 116) e.preventDefault();
 
     if (programIsRunning) {
-        for (main_i = 0; main_i < allKeyEvenListeners.length; main_i++)
+        for (main_i = 0; main_i < allKeyEvenListeners.length; main_i++) {
             allKeyEvenListeners[main_i].setKey(e);
+        }
     }
 }
 
@@ -513,31 +509,28 @@ function keyUp(e) {
     if (e.keyCode !== 123 && e.keyCode !== 116) e.preventDefault();
 
     if (programIsRunning) {
-        for (main_i = 0; main_i < allKeyEvenListeners.length; main_i++)
+        for (main_i = 0; main_i < allKeyEvenListeners.length; main_i++) {
             allKeyEvenListeners[main_i].releaseKey(e);
+        }
     }
 }
 
 function mouseUp() {
-    document.documentElement.style.cursor = 'default';  // needed!
-    if (dragging)
-        blockOnFocus.mouseUpCoddingBlock();
+    document.documentElement.style.cursor = 'default'; // needed!
+    if (dragging) blockOnFocus.mouseUpCoddingBlock();
 }
 
 function mouseMove(event) {
-    if (dragging)
-        blockOnFocus.mouseMoveCoddingBlock(event);
+    if (dragging) blockOnFocus.mouseMoveCoddingBlock(event);
 }
 
 function distance2D(point_1_X, point_1_Y, point_2_X, point_2_Y) {
-    return Math.sqrt((point_1_X - point_2_X) *
-                     (point_1_X - point_2_X) + (point_1_Y - point_2_Y) *
-                                               (point_1_Y - point_2_Y));
+    return Math.sqrt((point_1_X - point_2_X) * (point_1_X - point_2_X) + (point_1_Y - point_2_Y) * (point_1_Y - point_2_Y));
 }
 
 function setMeOnTop(self) {
     zIndex = startZIndex + allCodingBlocks.length + 5; // angel number
-    for (let i = 0; i < allCodingBlocks.length; i++) {
+    for (var i = 0; i < allCodingBlocks.length; i++) {
         if (self.id !== i) {
             allCodingBlocks[i].container.style.zIndex = startZIndex;
         }
@@ -546,7 +539,7 @@ function setMeOnTop(self) {
     if (creatorMode) {
         inventory.style.zIndex = zIndex;
         self.container.style.zIndex = zIndex + 1;
-        divPreview.style.zIndex = zIndex + 2 ;
+        divPreview.style.zIndex = zIndex + 2;
         canvasPreview.style.zIndex = zIndex + 3;
     } else {
         self.container.style.zIndex = zIndex;
@@ -557,29 +550,20 @@ function setMeOnTop(self) {
     buttonsDiv.style.zIndex = zIndex + 4;
     spritesDiv.style.zIndex = zIndex + 4;
 }
-let imgGirl = document.getElementById('girl');
-let imgVader = document.getElementById('vader');
-let girl = new Sprite(imgGirl, 100, 100);
-let vader = new Sprite(imgVader, 120, 100);
 
 // populate the inventory table
-let startBlock = new StaticInventoryStartBlock();
-let ifBlock = new StaticInventoryIfBlock();
-let ifElseStaticBlock = new StaticInventoryIfElseBlock();
-let foreverBlock = new StaticInventoryForeverBlock();
+var startBlock = new StaticInventoryStartBlock();
+var ifBlock = new StaticInventoryIfBlock();
+var ifElseStaticBlock = new StaticInventoryIfElseBlock();
+var foreverBlock = new StaticInventoryForeverBlock();
 
-let keyUpBlock = new StaticInventoryKeyUpBlock();
-let keyDownBlock = new StaticInventoryKeyDownBlock();
-let keyLeftBlock = new StaticInventoryKeyLeftBlock();
-let keyRightBlock = new StaticInventoryKeyRightBlock();
+var keyUpBlock = new StaticInventoryKeyUpBlock();
+var keyDownBlock = new StaticInventoryKeyDownBlock();
+var keyLeftBlock = new StaticInventoryKeyLeftBlock();
+var keyRightBlock = new StaticInventoryKeyRightBlock();
 
-let keyUpOnceBlock = new StaticInventoryKeyUpOnceBlock();
-let keyDownOnceBlock = new StaticInventoryKeyDownOnceBlock();
-let keyLeftOnceBlock = new StaticInventoryKeyLeftOnceBlock();
-let keyRightOnceBlock = new StaticInventoryKeyRightOnceBlock();
-
-let moveUpBlock = new StaticInventoryStepUPBlock();
-let moveDownBlock = new StaticInventoryStepDownBlock();
-let moveLeftBlock = new StaticInventoryStepLeftBlock();
-let moveRightBlock = new StaticInventoryStepRightBlock();
-
+var keyUpOnceBlock = new StaticInventoryKeyUpOnceBlock();
+var keyDownOnceBlock = new StaticInventoryKeyDownOnceBlock();
+var keyLeftOnceBlock = new StaticInventoryKeyLeftOnceBlock();
+var keyRightOnceBlock = new StaticInventoryKeyRightOnceBlock();
+//# sourceMappingURL=main.js.map
