@@ -1,15 +1,3 @@
-'use strict';
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////
 //////////////
@@ -19,318 +7,309 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 ////////////////////////////////////////////////////////////////////////////
 
 
-var StaticInventoryIMGrefBlock = function (_CodingBlock) {
-    _inherits(StaticInventoryIMGrefBlock, _CodingBlock);
+class StaticInventoryIMGrefBlock extends CodingBlock {
+    constructor(img, startingXonCanvas, startingYonCanvas, imgOnCanvasDimensions, stepAmount, speed) {
 
-    function StaticInventoryIMGrefBlock(img, startingXonCanvas, startingYonCanvas, imgOnCanvasDimensions, stepAmount, speed) {
-        _classCallCheck(this, StaticInventoryIMGrefBlock);
+        let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        let corpse = CreateShape(svg, loopsColor, false, false, [new Title(svg, shapesWallsWidth, titleOffsetY, 'SPRITE')], true, false);
 
-        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        var corpse = CreateShape(svg, loopsColor, false, false, [new Title(svg, shapesWallsWidth, titleOffsetY, 'SPRITE')], true, false);
+        let top = currentOffsetInInventory + shapesWallsWidth - heightOfBumb;
 
-        var top = currentOffsetInInventory + shapesWallsWidth - heightOfBumb;
+        super(corpse, svg, staticShapesLeftMargin, currentOffsetInInventory, 'static');
 
-        var _this = _possibleConstructorReturn(this, (StaticInventoryIMGrefBlock.__proto__ || Object.getPrototypeOf(StaticInventoryIMGrefBlock)).call(this, corpse, svg, staticShapesLeftMargin, currentOffsetInInventory, 'static'));
+        this.body.moveFirstBar(shapesWallsWidth * 4 + heightOfBumb);
 
-        _this.body.moveFirstBar(shapesWallsWidth * 4 + heightOfBumb);
+        this.img = img;
 
-        _this.img = img;
+        this.XonCanvas = startingXonCanvas;
+        this.YonCanvas = startingYonCanvas;
 
-        _this.XonCanvas = startingXonCanvas;
-        _this.YonCanvas = startingYonCanvas;
+        this.imgWidth = imgOnCanvasDimensions.width;
+        this.imgHeight = imgOnCanvasDimensions.height;
 
-        _this.imgWidth = imgOnCanvasDimensions.width;
-        _this.imgHeight = imgOnCanvasDimensions.height;
+        this.upRequested = false;
+        this.downRequested = false;
+        this.leftRequested = false;
+        this.rightRequested = false;
 
-        _this.upRequested = false;
-        _this.downRequested = false;
-        _this.leftRequested = false;
-        _this.rightRequested = false;
+        this.speed = speed;
 
-        _this.speed = speed;
+        this.localStepAmount = stepAmount / this.speed;
 
-        _this.localStepAmount = stepAmount / _this.speed;
+        this.IneedToAnimatedMove = false;
 
-        _this.IneedToAnimatedMove = false;
-
-        _this.animCounter = _this.speed;
-        _this.animIsRunning = false;
+        this.animCounter = this.speed;
+        this.animIsRunning = false;
 
         // create the refence shapes and add them to inventory
-        var self = _this;
+        let self = this;
 
         allAnimationEventListeners.push(self);
 
         // STEP LEFT
-        _this.moveUpBlock = new StaticInventoryStepUPBlock(self);
-        _this.moveUpBlock.container.style.top = top + 'px';
-        _this.moveUpBlock.container.style.left = staticShapesLeftMargin + shapesWallsWidth + 'px';
+        this.moveUpBlock = new StaticInventoryStepUPBlock(self);
+        this.moveUpBlock.container.style.top = top + 'px';
+        this.moveUpBlock.container.style.left = (staticShapesLeftMargin + shapesWallsWidth) + 'px';
         top += shapesWallsWidth;
 
-        _this.moveDownBlock = new StaticInventoryStepDownBlock(self);
-        _this.moveDownBlock.container.style.top = top + 'px';
-        _this.moveDownBlock.container.style.left = staticShapesLeftMargin + shapesWallsWidth + 'px';
+        this.moveDownBlock = new StaticInventoryStepDownBlock(self);
+        this.moveDownBlock.container.style.top = top + 'px';
+        this.moveDownBlock.container.style.left = (staticShapesLeftMargin + shapesWallsWidth) + 'px';
         top += shapesWallsWidth;
 
-        _this.moveLeftBlock = new StaticInventoryStepLeftBlock(self);
-        _this.moveLeftBlock.container.style.top = top + 'px';
-        _this.moveLeftBlock.container.style.left = staticShapesLeftMargin + shapesWallsWidth + 'px';
+        this.moveLeftBlock = new StaticInventoryStepLeftBlock(self);
+        this.moveLeftBlock.container.style.top = top + 'px';
+        this.moveLeftBlock.container.style.left = (staticShapesLeftMargin + shapesWallsWidth) + 'px';
         top += shapesWallsWidth;
 
-        _this.moveRightBlock = new StaticInventoryStepRightBlock(self);
-        _this.moveRightBlock.container.style.top = top + 'px';
-        _this.moveRightBlock.container.style.left = staticShapesLeftMargin + shapesWallsWidth + 'px';
+        this.moveRightBlock = new StaticInventoryStepRightBlock(self);
+        this.moveRightBlock.container.style.top = top + 'px';
+        this.moveRightBlock.container.style.left = (staticShapesLeftMargin + shapesWallsWidth) + 'px';
 
         currentOffsetInInventory -= shapesWallsWidth + heightOfBumb;
-        return _this;
+
+        this.draw();
     }
 
-    _createClass(StaticInventoryIMGrefBlock, [{
-        key: 'stepUp',
-        value: function stepUp() {
-            this.upRequested = true;
+    stepUp() {
+        this.upRequested = true;
+    }
+
+    stepDown() {
+        this.downRequested = true;
+    }
+
+    stepLeft() {
+        this.leftRequested = true;
+    }
+
+    stepRight() {
+        this.rightRequested = true;
+    }
+
+    animateTo() {
+
+        this.IneedToAnimatedMove = false;
+
+        // avoid conflicts
+        if (this.upRequested && !this.downRequested) {
+            this.YonCanvas -= this.localStepAmount;
+            this.IneedToAnimatedMove = true;
+        } else if (!this.upRequested && this.downRequested) {
+            this.YonCanvas += this.localStepAmount;
+            this.IneedToAnimatedMove = true;
         }
-    }, {
-        key: 'stepDown',
-        value: function stepDown() {
-            this.downRequested = true;
+
+        if (this.rightRequested && !this.leftRequested) {
+            this.XonCanvas += this.localStepAmount;
+            this.IneedToAnimatedMove = true;
+        } else if (!this.rightRequested && this.leftRequested) {
+            this.XonCanvas -= this.localStepAmount;
+            this.IneedToAnimatedMove = true;
         }
-    }, {
-        key: 'stepLeft',
-        value: function stepLeft() {
-            this.leftRequested = true;
+
+        if (this.IneedToAnimatedMove) {
+            this.animCounter = this.speed;
         }
-    }, {
-        key: 'stepRight',
-        value: function stepRight() {
-            this.rightRequested = true;
+
+        if (this.animCounter > 0) {
+            repaintOfCanvasRequestedDueMoving = true;
+            this.animCounter -= 1;
         }
-    }, {
-        key: 'animateTo',
-        value: function animateTo() {
 
-            this.IneedToAnimatedMove = false;
+        this.upRequested = false;
+        this.downRequested = false;
+        this.leftRequested = false;
+        this.rightRequested = false;
+    }
 
-            // avoid conflicts
-            if (this.upRequested && !this.downRequested) {
-                this.YonCanvas -= this.localStepAmount;
-                this.IneedToAnimatedMove = true;
-            } else if (!this.upRequested && this.downRequested) {
-                this.YonCanvas += this.localStepAmount;
-                this.IneedToAnimatedMove = true;
-            }
+    draw() {
+        ctx2D.drawImage(this.img, this.XonCanvas, this.YonCanvas, this.imgWidth, this.imgHeight);
+    }
+}
 
-            if (this.rightRequested && !this.leftRequested) {
-                this.XonCanvas += this.localStepAmount;
-                this.IneedToAnimatedMove = true;
-            } else if (!this.rightRequested && this.leftRequested) {
-                this.XonCanvas -= this.localStepAmount;
-                this.IneedToAnimatedMove = true;
-            }
+class StaticInventoryAnimatedIMGrefBlock extends StaticInventoryIMGrefBlock {
+    constructor(img,
+        startingXonCanvas,
+        startingYonCanvas,
+        imgOnCanvasDimensions,
+        stepAmount,
+        speed,
+        animationSpeed,
+        gridDimensions,
+        indexesOfDirections,
+        indexOfMainPose
+        ) {
+        super(img, startingXonCanvas, startingYonCanvas, imgOnCanvasDimensions, stepAmount, speed);
 
-            if (this.IneedToAnimatedMove) {
-                this.animCounter = this.speed;
-            }
+        this.gridWidth = gridDimensions.width;
+        this.gridHeight = gridDimensions.height;
 
-            if (this.animCounter > 0) {
-                repaintOfCanvasRequestedDueMoving = true;
-                this.animIsRunning -= 1;
-            }
+        this.animationSpeed = animationSpeed;
 
-            this.upRequested = false;
-            this.downRequested = false;
-            this.leftRequested = false;
-            this.rightRequested = false;
-        }
-    }, {
-        key: 'draw',
-        value: function draw() {
-            ctx2D.drawImage(this.img, this.XonCanvas, this.YonCanvas, this.imgWidth, this.imgHeight);
-        }
-    }]);
+        this.animationCounterTop = this.animationSpeed * 1000;
+        this.animationCounter = 0;
 
-    return StaticInventoryIMGrefBlock;
-}(CodingBlock);
+        this.spriteWidth = img.width;
+        this.spriteHeight = img.height;
 
-var StaticInventoryAnimatedIMGrefBlock = function (_StaticInventoryIMGre) {
-    _inherits(StaticInventoryAnimatedIMGrefBlock, _StaticInventoryIMGre);
-
-    function StaticInventoryAnimatedIMGrefBlock(img, div, startingXonCanvas, startingYonCanvas, imgOnCanvasDimensions, stepAmount, speed, animationSpeed, gridDimensions, indexesOfDirections, indexOfMainPose) {
-        _classCallCheck(this, StaticInventoryAnimatedIMGrefBlock);
-
-        var _this2 = _possibleConstructorReturn(this, (StaticInventoryAnimatedIMGrefBlock.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock)).call(this, img, startingXonCanvas, startingYonCanvas, imgOnCanvasDimensions, stepAmount, speed));
-
-        _this2.gridWidth = gridDimensions.width;
-        _this2.gridHeight = gridDimensions.height;
-
-        _this2.animationSpeed = animationSpeed;
-
-        _this2.animationCounterTop = _this2.animationSpeed * 1000;
-        _this2.animationCounter;
-
-        _this2.spriteWidth = img.width;
-        _this2.spriteHeight = img.height;
-
-        _this2.widthOfOnePose = _this2.spriteWidth / _this2.gridWidth;
-        _this2.HeightOfOnePose = _this2.spriteHeight / _this2.gridHeight;
+        this.widthOfOnePose = this.spriteWidth / this.gridWidth;
+        this.heightOfOnePose = this.spriteHeight / this.gridHeight;
 
         // positionate the background to show the main pose 
-        _this2.mainPoseX = indexOfMainPose.X * _this2.widthOfOnePose;
-        _this2.mainPoseY = indexOfMainPose.Y * _this2.widthOfOnePose;
+        this.mainPoseX = indexOfMainPose.X * this.widthOfOnePose;
+        this.mainPoseY = indexOfMainPose.Y * this.widthOfOnePose;
 
-        var scaleXofTheBackgrnd = 128 / widthOfOnePose * spriteWidth;
-        var scaleYofTheBackgrnd = 128 / heightOfOnePose * spriteHeight;
+        let scaleXofTheBackgrnd = (128 / this.widthOfOnePose) * this.spriteWidth;
+        let scaleYofTheBackgrnd = (128 / this.widthOfOnePose) * this.spriteHeight;
 
-        console.log('this.mainPoseX ' + _this2.mainPoseX + ' this.mainPoseY ' + _this2.mainPoseY);
-        document.getElementById(containerImgId).style.backgroundSize = '' + scaleXofTheBackgrnd + 'px ' + scaleYofTheBackgrnd + 'px';
-        document.getElementById(containerImgId).style.backgroundPosition = '' + _this2.mainPoseX + 'px ' + _this2.mainPoseY + 'px';
+        this.top_LookingRow = indexesOfDirections.top;
+        this.topRight_LookingRow = indexesOfDirections.topRight;
+        this.right_LookingRow = indexesOfDirections.right;
+        this.rightDown_LookingRow = indexesOfDirections.rightDown;
+        this.down_LookingRow = indexesOfDirections.down;
+        this.downLeft_LookingRow = indexesOfDirections.downLeft;
+        this.left_LookingRow = indexesOfDirections.left;
+        this.leftTop_LookingRow = indexesOfDirections.leftTop;
 
-        _this2.top_LookingRow = indexesOfDirections.top;
-        _this2.topRight_LookingRow = indexesOfDirections.topRight;
-        _this2.right_LookingRow = indexesOfDirections.right;
-        _this2.rightDown_LookingRow = indexesOfDirections.rightDown;
-        _this2.down_LookingRow = indexesOfDirections.down;
-        _this2.downLeft_LookingRow = indexesOfDirections.downLeft;
-        _this2.left_LookingRow = indexesOfDirections.left;
-        _this2.leftTop_LookingRow = indexesOfDirections.leftTop;
+        this.animationCurrentFrame = 0;
+        this.newDirection = 0;
 
-        _this2.animationRequested = false;
+        this.animatingNow = false;
 
-        _this2.animationCurrentFrame = 0;
+        this.currentDirection = this.down_LookingRow;
 
-        _this2.currentDirection = _this2.down_LookingRow;
+        let self = this;
 
-        var self = _this2;
+        let mainPoseX = this.mainPoseX;
+        let mainPoseY = this.mainPoseY;
 
-        var mainPoseX = _this2.mainPoseX;
-        var mainPoseY = _this2.mainPoseY;
+        //////////////////////////////////////////////////////////////////
 
-        // Expand the refence shapes
-        return _this2;
+        // please later pass the name nad the action function as arguments. now there is no time but later...
+        this.body.moveFirstBar(shapesWallsWidth * 5 + heightOfBumb);
+
+        let top = currentOffsetInInventory - shapesWallsWidth * 2;
+
+        this.animateBlock = new StaticInventoryAnimateBlock(self);
+        this.animateBlock.container.style.top = top + 'px';
+        this.animateBlock.container.style.left = (staticShapesLeftMargin + shapesWallsWidth) + 'px';
+        //top += shapesWallsWidth;
+
+        currentOffsetInInventory -= shapesWallsWidth;
+
+        this.draw();
     }
 
     // i should have put those rotations to the upper sprite, but it is used only for backgrounds and somehow doesnt fit the purpose (how would it look to rotate 2D background?!)
-
-
-    _createClass(StaticInventoryAnimatedIMGrefBlock, [{
-        key: 'rotateTo',
-        value: function rotateTo(direction) {
-            switch (direction) {
-                case 'up':
-                    this.currentDirection = this.top_LookingRow;
-                    break;
-                case 'down':
-                    this.currentDirection = this.down_LookingRow;
-                    break;
-                case 'left':
-                    this.currentDirection = this.left_LookingRow;
-                    break;
-                case 'right':
-                    this.currentDirection = this.right_LookingRow;
-                    break;
+    lookAt(direction) {
+        switch (direction) {
+            case 'up':
+                this.currentDirection = this.top_LookingRow;
+                break;
+            case 'down':
+                this.currentDirection = this.down_LookingRow;
+                break;
+            case 'left':
+                this.currentDirection = this.left_LookingRow
+                break;
+            case 'right':
+                this.currentDirection = this.right_LookingRow
+                break;
                 //-------------------------
-                case 'topLeft':
-                    this.currentDirection = this.leftTop_LookingRow;
-                    break;
-                case 'topRight':
-                    this.currentDirection = this.topRight_LookingRow;
-                    break;
-                case 'downLeft':
-                    this.currentDirection = this.downLeft_LookingRow;
-                    break;
-                case 'downRight':
-                    this.currentDirection = this.rightDown_LookingRow;
-            }
+            case 'topLeft':
+                this.currentDirection = this.leftTop_LookingRow
+                break;
+            case 'topRight':
+                this.currentDirection = this.topRight_LookingRow
+                break;
+            case 'downLeft':
+                this.currentDirection = this.downLeft_LookingRow
+                break;
+            case 'downRight':
+                this.currentDirection = this.rightDown_LookingRow
         }
-    }, {
-        key: 'goTowardCurrentDirection',
-        value: function goTowardCurrentDirection() {
-            switch (this.currentDirection) {
-                case this.top_LookingRow:
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'moveUp', this).call(this);
-                    break;
-                case this.topRight_LookingRow:
-                    this.upRequested = true;
-                    this.rightRequested = true;
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'move', this).call(this);
-                    break;
+    }
 
-                case this.right_LookingRow:
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'moveRight', this).call(this);
-                    break;
-                case this.rightDown_LookingRow:
-                    this.downRequested = true;
-                    this.rightRequested = true;
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'move', this).call(this);
-                    break;
-                //-------------------------
-                case this.down_LookingRow:
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'moveDown', this).call(this);
-                    break;
-                case this.downLeft_LookingRow:
-                    this.downRequested = true;
-                    this.leftRequested = true;
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'move', this).call(this);
-                    break;
+    // NOTE in real life, this logic should be implemented throuch block, now we are cheating a little bit
+    rotateRegardArrows() {
+        if (this.leftRequested && !this.rightRequested) {
+            if (this.upRequested && !this.downRequested) {
+                this.newDirection = this.leftTop_LookingRow;
+            } else if (!this.upRequested && this.downRequested) {
+                this.newDirection = this.downLeft_LookingRow;
+            } else {
+                this.newDirection = this.left_LookingRow;
+            }
+        } else if (!this.leftRequested && this.rightRequested) {
+            if (!this.upRequested && this.downRequested) {
+                this.newDirection = this.rightDown_LookingRow;
+            } else if (this.upRequested && !this.downRequested) {
+                this.newDirection = this.topRight_LookingRow;
+            } else {
+                this.newDirection = this.right_LookingRow;
+            }
+        } else if (!this.upRequested && this.downRequested) {
+            this.newDirection = this.down_LookingRow;
+        } else if (this.upRequested && !this.downRequested) {
+            this.newDirection = this.top_LookingRow;
+        }
 
-                case this.left_LookingRow:
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'moveLeft', this).call(this);
-                    break;
-                case this.leftTop_LookingRow:
-                    this.leftRequested = true;
-                    this.topRequested = true;
-                    _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'move', this).call(this);
-            }
+        if (this.newDirection != this.currentDirection) {
+            this.animationCurrentFrame = 0;
+            this.currentDirection = this.newDirection;
         }
-    }, {
-        key: 'animationPlay',
-        value: function animationPlay() {
-            // just to be sure not weird artifacts happen
-            if (!this.animationRequested) {
-                this.animationCurrentFrame = 0;
-                this.animationRequested = true;
+    }
+
+    animationPlay() {
+        // just to be sure not weird artifacts happen
+        if (!this.animatingNow) {
+
+            if (this.animationCounter + 1 >= this.animationCounterTop) {
+                this.animationCounter = 0;
+            } else {
+                this.animationCounter += 1;
             }
-        }
-    }, {
-        key: 'animateTo',
-        value: function animateTo() {
-            if (this.animationRequested) {
-                if (this.animationCounter + 1 >= this.animationCounterTop) {
-                    this.animationCounter = 0;
+
+            if (this.animationCounter % this.animationSpeed == 0) {
+                if (this.animationCurrentFrame >= this.gridWidth - 1) {
+                    this.animationCurrentFrame = 0;
                 } else {
-                    this.animationCounter += 1;
-                }
-
-                if (this.animationCounter % this.animationSpeed == 0) {
-                    if (this.animationCurrentFrame > this.gridWidth) {
-                        this.animationCurrentFrame = 0;
-                    } else {
-                        this.animationCurrentFrame += 1;
-                    }
+                    this.animationCurrentFrame += 1;
                 }
                 repaintOfCanvasRequestedDueAnimation = true;
             }
-            _get(StaticInventoryAnimatedIMGrefBlock.prototype.__proto__ || Object.getPrototypeOf(StaticInventoryAnimatedIMGrefBlock.prototype), 'animateTo', this).call(this);
+            this.animatingNow = true;
         }
-    }, {
-        key: 'draw',
-        value: function draw() {
-            ctx2D.drawImage(this.img, this.animationCurrentFrame * this.widthOfOnePose, this.currentDirection * this.HeightOfOnePose, this.widthOfOnePose, this.HeightOfOnePose, this.XonCanvas, this.YonCanvas, this.imgWidth, this.imgHeight);
-        }
-    }, {
-        key: 'animationReset',
-        value: function animationReset() {
-            this.animationCurrentFrame = 0;
-            this.animationRequested = false;
-        }
-    }]);
+    }
 
-    return StaticInventoryAnimatedIMGrefBlock;
-}(StaticInventoryIMGrefBlock);
+    animateTo() {
+        this.rotateRegardArrows();  // cheating for the presentation :p
+
+        super.animateTo();
+
+        this.animatingNow = false;
+
+        if (!this.IneedToAnimatedMove)
+            this.animationReset();
+    }
+
+    draw() {
+        ctx2D.drawImage(this.img,
+                        this.animationCurrentFrame * this.widthOfOnePose, this.currentDirection * this.heightOfOnePose,
+                        this.widthOfOnePose, this.heightOfOnePose,
+                        this.XonCanvas, this.YonCanvas,
+                        this.imgWidth, this.imgHeight);
+    }
+
+    animationReset() {
+        this.animationCurrentFrame = 0;
+    }
+}
 
 function repaintAllIMGsOnCanvas() {
     ctx2D.clearRect(0, 0, canvasWidth, canvasHeight);
-    for (var draw_i = 0; draw_i < allImageCoddingBlocks.length; draw_i++) {
+    for (draw_i = 0; draw_i < allImageCoddingBlocks.length; draw_i++) {
         allImageCoddingBlocks[draw_i].draw();
     }
     repaintOfCanvasRequestedDueAnimation = false;
@@ -338,12 +317,11 @@ function repaintAllIMGsOnCanvas() {
 }
 
 // instances of this Class are created on page loading or when the load button is clicked(no time for such button)
-
-var Sprite = function () {
-    function Sprite(spriteImgPath, // path to the image as string
-    imgOnCanvasDimensions, stepAmount, speed // if at some moment there are bullets, they will move faster
-    ) {
-        _classCallCheck(this, Sprite);
+class Sprite {
+    constructor(spriteImgPath,  // path to the image as string
+        imgOnCanvasX,
+        stepAmount, speed  // if at some moment there are bullets, they will move faster
+        ) {
 
         this.spriteContainer = document.createElement('div');
         this.spriteContainer.setAttribute('class', 'sprites');
@@ -351,17 +329,14 @@ var Sprite = function () {
 
         this.speed = speed;
 
-        this.spriteWidth = imgOnCanvasDimensions.width;
-        this.spriteHeight = imgOnCanvasDimensions.height;
-
         this.stepAmount = stepAmount;
 
         // make sure we are not loading the image twice
-        var imageAlreadyLoaded = false;
+        let imageAlreadyLoaded = false;
 
         this.image = new Image();
 
-        for (var i = 0; i < allLoadedSpriteImagesAsPaths.length; i++) {
+        for (let i = 0; i < allLoadedSpriteImagesAsPaths.length; i++) {
             if (allLoadedSpriteImagesAsPaths[i] === spriteImgPath) {
                 imageAlreadyLoaded = true;
                 this.image = allLoadedSpriteImagesAsObjects[i];
@@ -369,7 +344,13 @@ var Sprite = function () {
             }
         }
 
-        var self = this;
+        this.spriteWidth = 0;
+        this.spriteHeight = 0;
+
+        let self = this;
+        this.spriteImgPath = spriteImgPath;
+
+        this.imgOnCanvasX = imgOnCanvasX;
 
         if (!imageAlreadyLoaded) {
             allLoadedSpriteImagesAsPaths.push(spriteImgPath);
@@ -379,103 +360,122 @@ var Sprite = function () {
 
             this.image.onload = function () {
                 allLoadedSpriteImagesAsObjects.push(self.image);
-            };
+
+                self.spriteWidth = self.imgOnCanvasX;
+                self.spriteHeight = self.spriteWidth * (self.image.height / self.image.width);
+
+                self.spriteContainer.style.backgroundImage = 'url(\'' + self.spriteImgPath + '\')';
+
+                // add listener to create new ImgReferenceCoddingBlock
+                self.spriteContainer.addEventListener('click', function () {
+                    self.drawImage();
+                });
+            }
         }
-
-        this.spriteContainer.style.backgroundImage = 'url(\'' + spriteImgPath + '\')';
-
-        // add listener to create new ImgReferenceCoddingBlock
-        this.spriteContainer.addEventListener('click', function () {
-            self.drawImage();
-        });
     }
 
-    _createClass(Sprite, [{
-        key: 'drawImage',
-        value: function drawImage() {
-            var centeredX = canvasWidth / 2 - this.spriteWidth / 2;
-            var centeredY = canvasHeight / 2 - this.spriteHeight / 2;
+    drawImage() {
+        let centeredX = canvasWidth / 2 - this.spriteWidth / 2;
+        let centeredY = canvasHeight / 2 - this.spriteHeight / 2;
 
-            this.createNewImgRefCoddingBlock(centeredX, centeredY);
-        }
-    }, {
-        key: 'createNewImgRefCoddingBlock',
-        value: function createNewImgRefCoddingBlock(centeredX, centeredY) {
-            // create its programming representation inside the inventory div
-            allImageCoddingBlocks.push(new StaticInventoryIMGrefBlock(this.image, centeredX, centeredY, { width: this.spriteWidth, height: this.spriteHeight }, this.stepAmount, this.speed));
+        this.createNewImgRefCoddingBlock(centeredX, centeredY);
+    }
 
-            allImageCoddingBlocks[allImageCoddingBlocks.length - 1].draw();
-        }
-    }]);
-
-    return Sprite;
-}();
+    createNewImgRefCoddingBlock(centeredX, centeredY) {
+        // create its programming representation inside the inventory div
+        allImageCoddingBlocks.push(new StaticInventoryIMGrefBlock(this.image, centeredX, centeredY,
+                                                                 { width: this.spriteWidth, height: this.spriteHeight }, this.stepAmount, this.speed));
+    }
+}
 
 // instances of this are created on loading time or load button, but this one loads animated sprites
+class AnimatedSprite extends Sprite {
+    constructor(spriteImgPath,
+        imgOnCanvasX,
+        stepAmount,
+        speed,
+        animationSpeed,
+        gridDimensions,
+        indexesOfDirections, 
+        indexOfMainPose,
+        xCorr, yCorr) {
 
+        super(spriteImgPath, imgOnCanvasX, stepAmount, speed);
 
-var AnimatedSprite = function (_Sprite) {
-    _inherits(AnimatedSprite, _Sprite);
+        this.animationSpeed = animationSpeed;
+        this.gridDimensions = gridDimensions;
+        this.indexesOfDirections = indexesOfDirections;
+        this.indexOfMainPose = indexOfMainPose;
 
-    function AnimatedSprite(spriteImgPath, imgOnCanvasDimensions, stepAmount, speed, gridDimensions, indexesOfDirections, indexOfMainPose) {
-        _classCallCheck(this, AnimatedSprite);
+        let widthOfOnePose = this.image.width / this.gridDimensions.width;
+        let heightOfOnePose = this.image.height / this.gridDimensions.height;
 
-        var _this3 = _possibleConstructorReturn(this, (AnimatedSprite.__proto__ || Object.getPrototypeOf(AnimatedSprite)).call(this, spriteImgPath, imgOnCanvasDimensions, stepAmount, speed));
+        let scaleXofTheBackgrnd = (128 / widthOfOnePose) * this.image.width;
+        let scaleYofTheBackgrnd = (128 / heightOfOnePose) * this.image.height;
 
-        var gridWidth = gridDimensions.width;
-        var gridHeight = gridDimensions.height;
+        this.spriteContainer.style.backgroundSize = '' + scaleXofTheBackgrnd + 'px ' + scaleYofTheBackgrnd + 'px';
+        this.spriteContainer.style.backgroundPosition = '' + (-(indexOfMainPose.X * widthOfOnePose + xCorr)) + 'px ' + (-(indexOfMainPose.Y * heightOfOnePose + yCorr)) + 'px';
 
-        var widthOfOnePose = _this3.image.width / gridDimensions.width;
-        var heightOfOnePose = _this3.image.height / gridDimensions.height;
-
-        // positionate the background to show the main pose 
-        _this3.mainPoseX = indexOfMainPose.X * widthOfOnePose;
-        _this3.mainPoseY = indexOfMainPose.Y * widthOfOnePose;
-
-        var scaleXofTheBackgrnd = 128 / widthOfOnePose * _this3.spriteWidth;
-        var scaleYofTheBackgrnd = 128 / heightOfOnePose * _this3.spriteHeight;
-
-        console.log('this.mainPoseX ' + _this3.mainPoseX + ' this.mainPoseY ' + _this3.mainPoseY);
-        _this3.spriteContainer.style.backgroundSize = '' + scaleXofTheBackgrnd + 'px ' + scaleYofTheBackgrnd + 'px';
-        _this3.spriteContainer.style.backgroundPosition = '' + indexOfMainPose.X * widthOfOnePose + 'px ' + indexOfMainPose.Y * widthOfOnePose + 'px';
-
-        return _this3;
     }
 
-    _createClass(AnimatedSprite, [{
-        key: 'createNewImgRefCoddingBlock',
-        value: function createNewImgRefCoddingBlock(centeredX, centeredY) {
-            // create its programming representation inside the inventory div
-            allImageCoddingBlocks.push(new StaticInventoryAnimatedIMGrefBlock(this.image, this.spriteContainer, centeredX, centeredY, { width: this.spriteWidth, height: this.spriteHeight }, this.stepAmount, this.speed,
-            // additional parameters extending the superclass
-            animationSpeed, gridDimensions, indexesOfDirections, // as an object of indexes, explained below
-            indexOfMainPose));
+    createNewImgRefCoddingBlock(centeredX, centeredY) {
+        // create its programming representation inside the inventory div
+        allImageCoddingBlocks.push(new StaticInventoryAnimatedIMGrefBlock(this.image,
+                                                                  centeredX,
+                                                                  centeredY,
+                                                                { width: this.spriteWidth, height: this.spriteHeight },
+                                                                  this.stepAmount,
+                                                                  this.speed,
+                                                                  // additional parameters extending the superclass
+                                                                  this.animationSpeed,
+                                                                  this.gridDimensions,
+                                                                  this.indexesOfDirections, // as an object of indexes, explained below
+                                                                  this.indexOfMainPose
+                                                                  ));
+    }
+}
 
-            allImageCoddingBlocks[allImageCoddingBlocks.length - 1].draw();
-        }
-    }]);
+var horseTest = new AnimatedSprite('img/horse.png',
+                                    180,
+                                    5,
+                                    10,
+                                    10,
+                                  { width: 4, height: 4 },
+                                {
+                                    top: 3,
+                                    topRight: 3,
+                                    right: 2,
+                                    rightDown: 0,
+                                    down: 0,
+                                    downLeft: 0,
+                                    left: 1,
+                                    leftTop: 3
+                                },
+                                { X: 0, Y: 2 }, 0, 64);
 
-    return AnimatedSprite;
-}(Sprite);
+var pi4Test = new AnimatedSprite('img/pi4.png',
+                                    80,
+                                    7,
+                                    10,
+                                    5,
+                                  { width: 8, height: 8 },
+                                {
+                                    top: 7,
+                                    topRight: 6,
+                                    right: 5,
+                                    rightDown: 2,
+                                    down: 1,
+                                    downLeft: 0,
+                                    left: 3,
+                                    leftTop: 4
+                                },
+                                { X: 0, Y: 1 }, 0, 25);
 
-//var horseTest = new AnimatedSprite('img/horse.png', { width: 80, height: 80 }, 5, 10,
-//                                  { width: 4, height: 4 },
-//                                {
-//                                    top: 3,
-//                                    topRight: 3,
-//                                    right: 2,
-//                                    rightDown: 0,
-//                                    down: 0,
-//                                    downLeft: 0,
-//                                    left: 1,
-//                                    leftTop: 3
-//                                }, { X: 0, Y: 2 });
 
-var tankTest = new Sprite('img/tank.png', { width: 80, height: 80 }, 5, 10);
-var carTest = new Sprite('img/car.png', { width: 80, height: 80 }, 5, 10);
-var backgroundTest = new Sprite('img/field.png', { width: canvasWidth, height: canvasHeight }, 5, 20);
+var tankTest = new Sprite('img/tank.png', 80, 5, 10);
+var carTest = new Sprite('img/car.png', 80, 5, 10);
+var backgroundTest = new Sprite('img/field.png', canvasWidth*5, 5, 20);
 
-//var backgroundTest = new Sprite('img/pan.png', { width: canvasWidth, height: canvasHeight }, 5, 20);
+var backgroundTest = new Sprite('img/pan.png', canvasWidth * 2, 5, 20);
 
 resize();
-//# sourceMappingURL=sprite.js.map

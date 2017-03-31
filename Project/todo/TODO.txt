@@ -1,0 +1,17 @@
+
+when new shape is created it is added to the codding div, and if i enable overflow:hiden,
+the newly created shape is invisible. TODO: make it to be added to some other div with nearer z-index on creation time
+
+the code for deleting an element or group of, should be finished
+
+the logic changing the colors of the docks when near to an available dock is not polished yet. still looks aceptably good
+
+i decided user to be not able to insert elements in the very middle of a chain, because what if user decides to insert a
+forever block in the middle of the group. because forever has no tail, the rest of chain would hang somewhere uncertainly
+
+center horizontaly the titles of the shapes
+
+
+
+
+
